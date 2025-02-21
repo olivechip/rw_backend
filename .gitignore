@@ -33,5 +33,5 @@ build/
 .vscode/
 
 # Configuration files
-application.properties 
+application.properties
 application.yml
