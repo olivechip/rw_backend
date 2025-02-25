@@ -1,10 +1,11 @@
 package com.olivechip.restaurant_waitlist.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import com.enums.WaitlistStatus;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "waitlist_entries")
@@ -21,7 +22,7 @@ public class WaitlistEntry {
     private Integer id;
 
     // relationship and join annotation for JPA mapping used in JPA entities
-    @ManyToOne(fetch = FetchType.LAZY) 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "waitlistEntry")
     @JoinColumn(name = "guest_id", nullable = false)
     private Guest guest;
 
@@ -34,4 +35,10 @@ public class WaitlistEntry {
 
     @Column(name = "notified_time")
     private LocalDateTime notifiedTime;
+
+    public WaitlistEntry(Guest guest, WaitlistStatus status, LocalDateTime joinTime) {
+        this.guest = guest;
+        this.status = status;
+        this.joinTime = joinTime;
+    }
 }

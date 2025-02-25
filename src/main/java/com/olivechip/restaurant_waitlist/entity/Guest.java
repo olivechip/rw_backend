@@ -27,4 +27,7 @@ public class Guest {
 
     @Column(name = "phone_number", nullable = false) // validation later
     private String phoneNumber;
+
+    @OneToOne(mappedBy = "guest", cascade = CascadeType.ALL)
+    private WaitlistEntry waitlistEntry;
 }

@@ -9,5 +9,4 @@ public class RestaurantWaitlistApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RestaurantWaitlistApplication.class, args);
 	}
-
 }
