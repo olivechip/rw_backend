@@ -1,5 +1,7 @@
 package com.olivechip.restaurant_waitlist.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,5 +31,12 @@ public class Guest {
     private String phoneNumber;
 
     @OneToOne(mappedBy = "guest", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private WaitlistEntry waitlistEntry;
+
+    public Guest(String name, Integer partySize, String phoneNumber) {
+        this.name = name;
+        this.partySize = partySize;
+        this.phoneNumber = phoneNumber;
+    }
 }

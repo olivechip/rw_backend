@@ -36,10 +36,10 @@ INSERT INTO staff (username, pin, role) VALUES
     ('waitstaff1', '1111', 'WAITSTAFF');
 
 INSERT INTO guests (name, party_size, phone_number) VALUES
-    ('Terra', (random() * 10)::int + 1, (random() * 10000000000)::bigint),
-    ('Locke', (random() * 10)::int + 1, (random() * 10000000000)::bigint),
-    ('Celes', (random() * 10)::int + 1, (random() * 10000000000)::bigint),
-    ('Edgar', (random() * 10)::int + 1, (random() * 10000000000)::bigint);
+    ('Terra', (random() * 7)::int + 1, (random() * 10000000000)::bigint),
+    ('Locke', (random() * 7)::int + 1, (random() * 10000000000)::bigint),
+    ('Celes', (random() * 7)::int + 1, (random() * 10000000000)::bigint),
+    ('Edgar', (random() * 7)::int + 1, (random() * 10000000000)::bigint);
 
 INSERT INTO waitlist_entries (guest_id, status) VALUES
     (1, 'WAITING'),

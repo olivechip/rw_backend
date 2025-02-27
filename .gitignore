@@ -33,5 +33,9 @@ build/
 .vscode/
 
 # Configuration files
+application-test.properties
 application.properties
 application.yml
+
+# Local configuration file
+.env

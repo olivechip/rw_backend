@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import com.enums.WaitlistStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "waitlist_entries")
@@ -22,8 +23,9 @@ public class WaitlistEntry {
     private Integer id;
 
     // relationship and join annotation for JPA mapping used in JPA entities
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "waitlistEntry")
-    @JoinColumn(name = "guest_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guest_id")
+    @JsonBackReference
     private Guest guest;
 
     @Column(name = "status", nullable = false)
