@@ -1,4 +1,4 @@
-package com.olivechip.restaurant_waitlist.repository;
+package com.olivechip.restaurant_waitlist.controller;
 
 import java.util.Optional;
 
