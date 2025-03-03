@@ -1,5 +1,7 @@
 package com.olivechip.restaurant_waitlist.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,11 @@ public class GuestService {
         return guestRepository.save(guest);
     }
 
+    // retrieve all guests
+    public List<Guest> getAllGuests() {
+        return guestRepository.findAll();
+    }
+  
     // retrieve guest by id
     public Guest getGuestById(Integer id) {
         return guestRepository.findById(id).orElse(null);

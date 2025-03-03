@@ -1,5 +1,7 @@
 package com.olivechip.restaurant_waitlist.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,13 @@ public class GuestController {
         Guest createdGuest = guestService.createGuest(guest);
         return new ResponseEntity<>(createdGuest, HttpStatus.CREATED);
     }
-
+    
+    @GetMapping
+    public ResponseEntity<List<Guest>> getAllGuests() {
+        List<Guest> guests = guestService.getAllGuests();
+        return ResponseEntity.ok(guests);
+    }
+   
     @GetMapping("/{id}")
     public ResponseEntity<Guest> getGuestById(@PathVariable int id) {
         Guest guest = guestService.getGuestById(id);
