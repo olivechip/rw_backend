@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS waitlist_entries;
 
 CREATE TABLE staff (
     id SERIAL PRIMARY KEY,
-    username VARCHAR (255) NOT NULL UNIQUE,
+    username VARCHAR (30) NOT NULL UNIQUE,
     pin VARCHAR (4) NOT NULL CHECK (
         LENGTH(pin) = 4
         AND pin ~ '^\d{4}$'
@@ -14,7 +14,7 @@ CREATE TABLE staff (
 
 CREATE TABLE guests (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(30) NOT NULL,
     party_size INT NOT NULL,
     phone_number VARCHAR(20) NOT NULL
 );
