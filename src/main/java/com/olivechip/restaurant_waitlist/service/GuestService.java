@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.olivechip.restaurant_waitlist.controller.GuestRepository;
 import com.olivechip.restaurant_waitlist.entity.Guest;
+import com.olivechip.restaurant_waitlist.repository.GuestRepository;
 
 @Service
 public class GuestService {
