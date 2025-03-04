@@ -22,7 +22,7 @@ public class StaffController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Staff> getStaffById(@PathVariable int id) {
+    public ResponseEntity<Staff> getStaffById(@PathVariable Integer id) {
         Staff staff = staffService.getStaffById(id);
         if (staff == null) {
             return ResponseEntity.notFound().build();

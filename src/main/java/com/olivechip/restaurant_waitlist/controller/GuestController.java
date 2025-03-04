@@ -30,7 +30,7 @@ public class GuestController {
     }
    
     @GetMapping("/{id}")
-    public ResponseEntity<Guest> getGuestById(@PathVariable int id) {
+    public ResponseEntity<Guest> getGuestById(@PathVariable Integer id) {
         Guest guest = guestService.getGuestById(id);
         if (guest == null) {
             return ResponseEntity.notFound().build();
