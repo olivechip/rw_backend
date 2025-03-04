@@ -29,7 +29,7 @@ public class GuestController {
         return ResponseEntity.ok(guests);
     }
    
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Guest> getGuestById(@PathVariable Integer id) {
         Guest guest = guestService.getGuestById(id);
         if (guest == null) {
@@ -38,7 +38,7 @@ public class GuestController {
         return ResponseEntity.ok(guest);
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<Guest> getGuestByName(@PathVariable String name) {
         Guest guest = guestService.getGuestByName(name);
         if (guest == null) {
@@ -47,13 +47,13 @@ public class GuestController {
         return ResponseEntity.ok(guest);
     }
 
-    @PutMapping("/{name}")
+    @PutMapping("/name/{name}")
     public ResponseEntity<Guest> updateGuestByName(@PathVariable String name, @RequestBody Guest guest) {
         Guest updatedGuest = guestService.updateGuestByName(name, guest);
         return ResponseEntity.ok(updatedGuest);
     }
 
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/name/{name}")
     public ResponseEntity<Void> deleteGuestByName(@PathVariable String name) {
         guestService.deleteGuestByName(name);
         return ResponseEntity.noContent().build();

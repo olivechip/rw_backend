@@ -1,5 +1,7 @@
 package com.olivechip.restaurant_waitlist.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import com.olivechip.restaurant_waitlist.entity.Guest;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.service.WaitlistEntryService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/waitlist")

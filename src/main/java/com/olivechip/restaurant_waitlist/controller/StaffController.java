@@ -21,7 +21,7 @@ public class StaffController {
         return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Staff> getStaffById(@PathVariable Integer id) {
         Staff staff = staffService.getStaffById(id);
         if (staff == null) {
@@ -30,7 +30,7 @@ public class StaffController {
         return ResponseEntity.ok(staff);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<Staff> getStaffByUsername(@PathVariable String username) {
         Staff staff = staffService.getStaffByUsername(username);
         if (staff == null) {
@@ -39,13 +39,13 @@ public class StaffController {
         return ResponseEntity.ok(staff);
     }
 
-    @PutMapping("/{username}")
+    @PutMapping("/username/{username}")
     public ResponseEntity<Staff> updateStaffByUsername(@PathVariable String username, @RequestBody Staff staff) {
         Staff updatedStaff = staffService.updateStaffByUsername(username, staff);
         return ResponseEntity.ok(updatedStaff);
     }
 
-    @DeleteMapping("/{username}")
+    @DeleteMapping("/username/{username}")
     public ResponseEntity<Void> deleteStaffByUsername(@PathVariable String username) {
         staffService.deleteStaffByUsername(username);
         return ResponseEntity.noContent().build();
