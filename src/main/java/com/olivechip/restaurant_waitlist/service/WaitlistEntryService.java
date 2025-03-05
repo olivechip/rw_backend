@@ -10,7 +10,6 @@ import com.enums.WaitlistStatus;
 import com.olivechip.restaurant_waitlist.entity.Guest;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.repository.WaitlistEntryRepository;
-import com.olivechip.restaurant_waitlist.service.GuestService;
 
 import jakarta.transaction.Transactional;
 
