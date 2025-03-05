@@ -13,7 +13,7 @@ import com.olivechip.restaurant_waitlist.service.GuestService;
 @RestController
 @RequestMapping("/api/guests")
 public class GuestController {
-    
+
     @Autowired
     private GuestService guestService;
 
@@ -22,20 +22,32 @@ public class GuestController {
         Guest createdGuest = guestService.createGuest(guest);
         return new ResponseEntity<>(createdGuest, HttpStatus.CREATED);
     }
-    
+
     @GetMapping
     public ResponseEntity<List<Guest>> getAllGuests() {
         List<Guest> guests = guestService.getAllGuests();
         return ResponseEntity.ok(guests);
     }
-   
-    @GetMapping("/id/{id}")
+
+    @GetMapping("/{id}")
     public ResponseEntity<Guest> getGuestById(@PathVariable Integer id) {
         Guest guest = guestService.getGuestById(id);
         if (guest == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(guest);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Guest> updateGuestById(@PathVariable Integer id, @RequestBody Guest guest) {
+        Guest updatedGuest = guestService.updateGuestById(id, guest);
+        return ResponseEntity.ok(updatedGuest);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGuestById(@PathVariable Integer id) {
+        guestService.deleteGuestById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/name/{name}")
@@ -45,17 +57,5 @@ public class GuestController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(guest);
-    }
-
-    @PutMapping("/name/{name}")
-    public ResponseEntity<Guest> updateGuestByName(@PathVariable String name, @RequestBody Guest guest) {
-        Guest updatedGuest = guestService.updateGuestByName(name, guest);
-        return ResponseEntity.ok(updatedGuest);
-    }
-
-    @DeleteMapping("/name/{name}")
-    public ResponseEntity<Void> deleteGuestByName(@PathVariable String name) {
-        guestService.deleteGuestByName(name);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -26,21 +26,16 @@ public class GuestService {
     public List<Guest> getAllGuests() {
         return guestRepository.findAll();
     }
-  
+
     // retrieve guest by id
     public Guest getGuestById(Integer id) {
         return guestRepository.findById(id).orElse(null);
     }
 
-    // retrieve guest by name
-    public Guest getGuestByName(String name) {
-        return guestRepository.findByName(name).orElse(null);
-    }
-
-    // update guest if guest exists by name
-    public Guest updateGuestByName(String name, Guest guest) {
-        Guest existingGuest = guestRepository.findByName(name)
-            .orElseThrow(() -> new IllegalArgumentException("Guest not found with name: " + name));
+    // update guest if guest exists by id
+    public Guest updateGuestById(Integer id, Guest guest) {
+        Guest existingGuest = guestRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Guest not found with id: " + id));
 
         if (guest.getName() != null) {
             existingGuest.setName(guest.getName());
@@ -55,10 +50,15 @@ public class GuestService {
         return guestRepository.save(existingGuest);
     }
 
-    // delete guest if guest exists by name
-    public void deleteGuestByName(String name) {
-        Guest existingGuest = guestRepository.findByName(name)
-            .orElseThrow(() -> new IllegalArgumentException("Guest not found with name: " + name));
+    // delete guest if guest exists by id
+    public void deleteGuestById(Integer id) {
+        Guest existingGuest = guestRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Guest not found with id: " + id));
         guestRepository.delete(existingGuest);
+    }
+
+    // retrieve guest by name
+    public Guest getGuestByName(String name) {
+        return guestRepository.findByName(name).orElse(null);
     }
 }

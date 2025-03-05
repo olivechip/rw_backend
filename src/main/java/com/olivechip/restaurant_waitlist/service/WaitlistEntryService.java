@@ -10,6 +10,7 @@ import com.enums.WaitlistStatus;
 import com.olivechip.restaurant_waitlist.entity.Guest;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.repository.WaitlistEntryRepository;
+import com.olivechip.restaurant_waitlist.service.GuestService;
 
 import jakarta.transaction.Transactional;
 
@@ -31,9 +32,9 @@ public class WaitlistEntryService {
         return waitlistEntryRepository.save(entry);
     }
 
-    // retrieve waitlist entry by guest name
-    public WaitlistEntry getWaitlistEntryByGuestName(String guestName) {
-        return waitlistEntryRepository.findWaitlistEntryByGuestName(guestName).orElse(null);
+    // retrieve waitlist entry by guest id
+    public WaitlistEntry getWaitlistEntryByGuestId(Integer guestId) {
+        return waitlistEntryRepository.findWaitlistEntryByGuestId(guestId).orElse(null);
     }
 
     // retrieve all waitlist entries
@@ -41,12 +42,12 @@ public class WaitlistEntryService {
         return waitlistEntryRepository.findAll();
     }
 
-    // update waitlist entry status by guest name AND new status
+    // update waitlist entry status by guest id AND new status
     @Transactional
-    public WaitlistEntry updateWaitlistEntryByGuestName(String guestName, WaitlistStatus status) {
-        WaitlistEntry entry = getWaitlistEntryByGuestName(guestName);
+    public WaitlistEntry updateWaitlistEntryByGuestId(Integer guestId, WaitlistStatus status) {
+        WaitlistEntry entry = getWaitlistEntryByGuestId(guestId);
         if (entry == null) {
-            throw new IllegalArgumentException("Waitlist entry not found for guest: " + guestName);
+            throw new IllegalArgumentException("Waitlist entry not found for guest: " + guestId);
         }
         entry.setStatus(status);
 
@@ -69,14 +70,14 @@ public class WaitlistEntryService {
         return waitlistEntryRepository.save(entry);
     }
 
-    // delete guest and waitlist entry by guest name
+    // delete guest and waitlist entry by guest id
     @Transactional
-    public void deleteGuestAndWaitlistEntry(String guestName) {
-        WaitlistEntry entry = getWaitlistEntryByGuestName(guestName);
+    public void deleteGuestAndWaitlistEntry(Integer guestId) {
+        WaitlistEntry entry = getWaitlistEntryByGuestId(guestId);
         if (entry == null) {
-            throw new IllegalArgumentException("Waitlist entry not found for guest: " + guestName);
+            throw new IllegalArgumentException("Waitlist entry not found for guest: " + guestId);
         }
         waitlistEntryRepository.delete(entry);
-        guestService.deleteGuestByName(guestName);
+        guestService.deleteGuestById(guestId);
     }
 }

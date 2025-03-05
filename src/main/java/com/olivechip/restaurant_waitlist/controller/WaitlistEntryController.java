@@ -25,32 +25,32 @@ public class WaitlistEntryController {
         return new ResponseEntity<>(createdEntry, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{guestName}")
-    public ResponseEntity<WaitlistEntry> getWaitlistEntryByGuestName(@PathVariable String guestName) {
-        WaitlistEntry entry = waitlistEntryService.getWaitlistEntryByGuestName(guestName);
-        if (entry == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(entry);
-    }
-
     @GetMapping
     public ResponseEntity<List<WaitlistEntry>> getWaitlist() {
         List<WaitlistEntry> waitlist = waitlistEntryService.getWaitlist();
         return ResponseEntity.ok(waitlist);
     }
 
-    @PutMapping("/{guestName}/{status}")
-    public ResponseEntity<WaitlistEntry> updateWaitlistEntryByGuestName(
-            @PathVariable String guestName,
+    @GetMapping("/{guestId}")
+    public ResponseEntity<WaitlistEntry> getWaitlistEntryByGuestId(@PathVariable Integer guestId) {
+        WaitlistEntry entry = waitlistEntryService.getWaitlistEntryByGuestId(guestId);
+        if (entry == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(entry);
+    }
+
+    @PutMapping("/{guestId}/{status}")
+    public ResponseEntity<WaitlistEntry> updateWaitlistEntryByGuestId(
+            @PathVariable Integer guestId,
             @PathVariable WaitlistStatus status) {
-        WaitlistEntry updatedEntry = waitlistEntryService.updateWaitlistEntryByGuestName(guestName, status);
+        WaitlistEntry updatedEntry = waitlistEntryService.updateWaitlistEntryByGuestId(guestId, status);
         return ResponseEntity.ok(updatedEntry);
     }
 
-    @DeleteMapping("/{guestName}")
-    public ResponseEntity<Void> deleteGuestAndWaitlistEntry(@PathVariable String guestName) {
-        waitlistEntryService.deleteGuestAndWaitlistEntry(guestName);
+    @DeleteMapping("/{guestId}")
+    public ResponseEntity<Void> deleteGuestAndWaitlistEntry(@PathVariable Integer guestId) {
+        waitlistEntryService.deleteGuestAndWaitlistEntry(guestId);
         return ResponseEntity.noContent().build();
     }
 }
