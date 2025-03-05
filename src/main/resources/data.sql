@@ -28,7 +28,7 @@ CREATE TABLE waitlist_entries (
     join_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     notified_time TIMESTAMP DEFAULT NULL,
     completed_time TIMESTAMP DEFAULT NULL,
-    canceled_time TIMESTAMP DEFAULT NULL,
+    canceled_time TIMESTAMP DEFAULT NULL
 );
 
 -- seeding database
