@@ -41,15 +41,31 @@ public class WaitlistEntryService {
         return waitlistEntryRepository.findAll();
     }
 
-    // update waitlist entry status to NOTIFIED by guest name
+    // update waitlist entry status by guest name AND new status
     @Transactional
-    public WaitlistEntry updateWaitlistEntryByGuestName(String guestName) {
+    public WaitlistEntry updateWaitlistEntryByGuestName(String guestName, WaitlistStatus status) {
         WaitlistEntry entry = getWaitlistEntryByGuestName(guestName);
         if (entry == null) {
             throw new IllegalArgumentException("Waitlist entry not found for guest: " + guestName);
         }
-        entry.setStatus(WaitlistStatus.NOTIFIED);
-        entry.setNotifiedTime(LocalDateTime.now());
+        entry.setStatus(status);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        switch (status) {
+            case WAITING:
+                entry.setJoinTime(now);
+                break;
+            case NOTIFIED:
+                entry.setNotifiedTime(now);
+                break;
+            case COMPLETED:
+                entry.setCompletedTime(now);
+                break;
+            case CANCELED:
+                entry.setCanceledTime(now);
+                break;
+        }
         return waitlistEntryRepository.save(entry);
     }
 

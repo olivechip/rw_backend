@@ -23,10 +23,12 @@ CREATE TABLE waitlist_entries (
     id SERIAL PRIMARY KEY,
     guest_id INT NOT NULL REFERENCES guests(id) ON DELETE CASCADE,
     status VARCHAR(50) NOT NULL CHECK (
-        status IN ('WAITING', 'NOTIFIED')
+        status IN ('WAITING', 'NOTIFIED', 'COMPLETED', 'CANCELED')
     ),
     join_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    notified_time TIMESTAMP DEFAULT NULL
+    notified_time TIMESTAMP DEFAULT NULL,
+    completed_time TIMESTAMP DEFAULT NULL,
+    canceled_time TIMESTAMP DEFAULT NULL,
 );
 
 -- seeding database

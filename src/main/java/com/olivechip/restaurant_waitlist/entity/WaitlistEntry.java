@@ -38,6 +38,12 @@ public class WaitlistEntry {
     @Column(name = "notified_time")
     private LocalDateTime notifiedTime;
 
+    @Column(name = "completed_time")
+    private LocalDateTime completedTime;
+    
+    @Column(name = "canceled_time")
+    private LocalDateTime canceledTime;
+
     public WaitlistEntry(Guest guest, WaitlistStatus status, LocalDateTime joinTime) {
         this.guest = guest;
         this.status = status;

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.enums.WaitlistStatus;
 import com.olivechip.restaurant_waitlist.entity.Guest;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.service.WaitlistEntryService;
@@ -39,9 +40,11 @@ public class WaitlistEntryController {
         return ResponseEntity.ok(waitlist);
     }
 
-    @PutMapping("/{guestName}")
-    public ResponseEntity<WaitlistEntry> updateWaitlistEntryByGuestName(@PathVariable String guestName) {
-        WaitlistEntry updatedEntry = waitlistEntryService.updateWaitlistEntryByGuestName(guestName);
+    @PutMapping("/{guestName}/{status}")
+    public ResponseEntity<WaitlistEntry> updateWaitlistEntryByGuestName(
+            @PathVariable String guestName,
+            @PathVariable WaitlistStatus status) {
+        WaitlistEntry updatedEntry = waitlistEntryService.updateWaitlistEntryByGuestName(guestName, status);
         return ResponseEntity.ok(updatedEntry);
     }
 
