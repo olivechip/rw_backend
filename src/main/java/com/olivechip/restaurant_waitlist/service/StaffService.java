@@ -20,18 +20,22 @@ public class StaffService {
     private RestaurantRepository restaurantRepository;
 
     // create a new staff member
-    public Staff createStaff(Staff staff, Integer restaurantId) {
+    public Staff createStaff(Staff staff) {
         if (staff.getUsername() == null || staff.getPassword() == null || staff.getRole() == null ||
-                staff.getFirstName() == null || staff.getLastName() == null) {
+                staff.getRestaurant() == null || staff.getFirstName() == null || staff.getLastName() == null) {
             throw new IllegalArgumentException(
-                    "Staff must have username, password, role, first name, and last name");
+                    "Staff must have username, password, role, restaurant, first name, and last name");
         }
 
+        // Get the restaurant from the staff object and find it by its ID
+        Integer restaurantId = staff.getRestaurant().getId(); // assuming restaurant is set in staff
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("Restaurant not found with ID: " + restaurantId));
 
+        // Set the restaurant for the staff object
         staff.setRestaurant(restaurant);
 
+        // Check if the username already exists
         if (staffRepository.existsByUsername(staff.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
