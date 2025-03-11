@@ -1,10 +1,13 @@
 package com.olivechip.restaurant_waitlist.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.service.StaffService;
 
@@ -21,7 +24,16 @@ public class StaffController {
         return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
     }
 
-    @GetMapping("/id/{id}")
+    // **********************************
+    // for testing only, remove in prod
+    @GetMapping
+    public ResponseEntity<List<Staff>> getAllStaff() {
+        List<Staff> staffList = staffService.getAllStaff();
+        return ResponseEntity.ok(staffList);
+    }
+    // **********************************
+
+    @GetMapping("/{id}")
     public ResponseEntity<Staff> getStaffById(@PathVariable Integer id) {
         Staff staff = staffService.getStaffById(id);
         if (staff == null) {
@@ -30,24 +42,27 @@ public class StaffController {
         return ResponseEntity.ok(staff);
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<Staff> getStaffByUsername(@PathVariable String username) {
-        Staff staff = staffService.getStaffByUsername(username);
-        if (staff == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(staff);
+    @PutMapping("/{id}")
+    public ResponseEntity<Staff> updateStaffById(
+            @PathVariable Integer id,
+            @RequestBody Staff staff) {
+        Staff updatedStaff = staffService.updateStaffById(id, staff);
+        return new ResponseEntity<>(updatedStaff, HttpStatus.OK);
     }
 
-    @PutMapping("/username/{username}")
-    public ResponseEntity<Staff> updateStaffByUsername(@PathVariable String username, @RequestBody Staff staff) {
-        Staff updatedStaff = staffService.updateStaffByUsername(username, staff);
-        return ResponseEntity.ok(updatedStaff);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStaffById(@PathVariable Integer id) {
+        staffService.deleteStaffById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/username/{username}")
-    public ResponseEntity<Void> deleteStaffByUsername(@PathVariable String username) {
-        staffService.deleteStaffByUsername(username);
-        return ResponseEntity.noContent().build();
+    @GetMapping
+    public ResponseEntity<List<Staff>> getStaffByRestaurant(
+            @RequestParam Integer restaurantId) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(restaurantId);
+
+        List<Staff> staffList = staffService.getStaffByRestaurant(restaurant);
+        return ResponseEntity.ok(staffList);
     }
 }
