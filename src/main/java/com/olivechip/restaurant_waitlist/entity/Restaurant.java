@@ -1,5 +1,7 @@
 package com.olivechip.restaurant_waitlist.entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,20 +24,14 @@ public class Restaurant {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
-
-    @Column(name = "password", nullable = false) // hash later
-    private String password;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "address", nullable = false)
     private String address;
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
-
-    @Column(name = "email", nullable = false)
-    private String email;
 
     @Column(name = "cuisine_type")
     private String cuisineType;
@@ -49,9 +45,13 @@ public class Restaurant {
     @Column(name = "hours_of_operation", columnDefinition = "TEXT")
     private String hoursOfOperation;
 
-    public Restaurant(String name, String username, String password) {
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Staff> staff;
+
+    public Restaurant(String name, String address, String phoneNumber, String email) {
         this.name = name;
-        this.username = username;
-        this.password = password;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 }
