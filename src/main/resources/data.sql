@@ -1,14 +1,30 @@
+DROP TABLE IF EXISTS restaurants;
+
 DROP TABLE IF EXISTS staff;
+
 DROP TABLE IF EXISTS guests;
+
 DROP TABLE IF EXISTS waitlist_entries;
+
+CREATE TABLE restaurants (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
+    cuisine_type VARCHAR(255),
+    website VARCHAR(255),
+    description TEXT,
+    hours_of_operation TEXT
+);
 
 CREATE TABLE staff (
     id SERIAL PRIMARY KEY,
-    username VARCHAR (30) NOT NULL UNIQUE,
-    pin VARCHAR (4) NOT NULL CHECK (
-        LENGTH(pin) = 4
-        AND pin ~ '^\d{4}$'
-    ),
+    restaurant_id INT NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    username VARCHAR(30) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL CHECK (role IN ('ADMIN', 'MANAGER', 'WAITSTAFF'))
 );
 
@@ -32,18 +48,40 @@ CREATE TABLE waitlist_entries (
 );
 
 -- seeding database
-INSERT INTO staff (username, pin, role) VALUES
+INSERT INTO
+    staff (username, pin, role)
+VALUES
     ('admin1', '1234', 'ADMIN'),
     ('manager1', '4321', 'MANAGER'),
     ('waitstaff1', '1111', 'WAITSTAFF');
 
-INSERT INTO guests (name, party_size, phone_number) VALUES
-    ('Terra', (random() * 7)::int + 1, (random() * 10000000000)::bigint),
-    ('Locke', (random() * 7)::int + 1, (random() * 10000000000)::bigint),
-    ('Celes', (random() * 7)::int + 1, (random() * 10000000000)::bigint),
-    ('Edgar', (random() * 7)::int + 1, (random() * 10000000000)::bigint);
+INSERT INTO
+    guests (name, party_size, phone_number)
+VALUES
+    (
+        'Terra',
+        (random() * 7) :: int + 1,
+        (random() * 10000000000) :: bigint
+    ),
+    (
+        'Locke',
+        (random() * 7) :: int + 1,
+        (random() * 10000000000) :: bigint
+    ),
+    (
+        'Celes',
+        (random() * 7) :: int + 1,
+        (random() * 10000000000) :: bigint
+    ),
+    (
+        'Edgar',
+        (random() * 7) :: int + 1,
+        (random() * 10000000000) :: bigint
+    );
 
-INSERT INTO waitlist_entries (guest_id, status) VALUES
+INSERT INTO
+    waitlist_entries (guest_id, status)
+VALUES
     (1, 'WAITING'),
     (2, 'WAITING'),
     (3, 'NOTIFIED'),
