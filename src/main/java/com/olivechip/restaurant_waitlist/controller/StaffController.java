@@ -20,7 +20,6 @@ public class StaffController {
 
     @PostMapping("/create")
     public ResponseEntity<Staff> createStaff(@RequestBody Staff staff) {
-        // You can directly pass the Staff object now
         Staff createdStaff = staffService.createStaff(staff);
         return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
     }
