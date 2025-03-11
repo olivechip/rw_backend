@@ -42,10 +42,14 @@ public class Staff {
     @JsonIgnore
     private Restaurant restaurant;
 
-    public Staff(String username, String password, StaffRole role, Restaurant restaurant) {
+    public Staff(String firstName, String lastName, String username, String password, StaffRole role,
+            Restaurant restaurant) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.role = role;
         this.restaurant = restaurant;
     }
+
 }
