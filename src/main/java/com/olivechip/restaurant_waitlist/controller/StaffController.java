@@ -1,13 +1,14 @@
 package com.olivechip.restaurant_waitlist.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.olivechip.restaurant_waitlist.dto.StaffCreationRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.service.StaffService;
@@ -20,8 +21,12 @@ public class StaffController {
     private StaffService staffService;
 
     @PostMapping("/create")
-    public ResponseEntity<Staff> createStaff(@RequestBody StaffCreationRequest request) {
-        Staff createdStaff = staffService.createStaff(request.getStaff(), request.getRestaurantId());
+    public ResponseEntity<Staff> createStaff(@RequestBody Map<String, Object> request) {
+
+        Staff staff = new ObjectMapper().convertValue(request.get("staff"), Staff.class);
+        Integer restaurantId = (Integer) request.get("restaurantId");
+
+        Staff createdStaff = staffService.createStaff(staff, restaurantId);
         return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
     }
 

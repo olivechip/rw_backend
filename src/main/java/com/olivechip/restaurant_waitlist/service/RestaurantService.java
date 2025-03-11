@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.olivechip.restaurant_waitlist.entity.Restaurant;
-import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.repository.RestaurantRepository;
 
 import jakarta.transaction.Transactional;
@@ -15,26 +14,18 @@ import jakarta.transaction.Transactional;
 public class RestaurantService {
 
     @Autowired
-    private StaffService staffService;
-
-    @Autowired
     private RestaurantRepository restaurantRepository;
 
-    // create a new restaurant and admin staff
+    // creates a restaurant
     @Transactional
-    public Restaurant createRestaurant(Restaurant restaurant, Staff adminStaff) {
+    public Restaurant createRestaurant(Restaurant restaurant) {
         if (restaurant.getName() == null || restaurant.getEmail() == null ||
                 restaurant.getAddress() == null || restaurant.getPhoneNumber() == null) {
             throw new IllegalArgumentException(
                     "Restaurant must have name, email, address, and phone number");
         }
 
-        Restaurant newRestaurant = restaurantRepository.save(restaurant);
-
-        adminStaff.setRestaurant(newRestaurant);
-        staffService.createStaff(adminStaff, newRestaurant.getId());
-
-        return newRestaurant;
+        return restaurantRepository.save(restaurant);
     }
 
     // retrieve all restaurants

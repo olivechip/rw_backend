@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.service.RestaurantService;
-import com.olivechip.restaurant_waitlist.dto.RestaurantCreationRequest;
 
 @RestController
 @RequestMapping("/api/restaurants")
@@ -19,10 +18,8 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @PostMapping("/create")
-    public ResponseEntity<Restaurant> createRestaurant(
-            @RequestBody RestaurantCreationRequest request) {
-        Restaurant createdRestaurant = restaurantService.createRestaurant(request.getRestaurant(),
-                request.getStaff());
+    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
+        Restaurant createdRestaurant = restaurantService.createRestaurant(restaurant);
         return new ResponseEntity<>(createdRestaurant, HttpStatus.CREATED);
     }
 
