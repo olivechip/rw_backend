@@ -22,7 +22,7 @@ public class RestaurantController {
     public ResponseEntity<Restaurant> createRestaurant(
             @RequestBody RestaurantCreationRequest request) {
         Restaurant createdRestaurant = restaurantService.createRestaurant(request.getRestaurant(),
-                request.getAdminStaff());
+                request.getStaff());
         return new ResponseEntity<>(createdRestaurant, HttpStatus.CREATED);
     }
 

@@ -31,11 +31,8 @@ public class RestaurantService {
 
         Restaurant newRestaurant = restaurantRepository.save(restaurant);
 
-        // Set the restaurant for the admin staff
         adminStaff.setRestaurant(newRestaurant);
-
-        // Create the admin staff using the StaffService
-        staffService.createStaff(adminStaff);
+        staffService.createStaff(adminStaff, newRestaurant.getId());
 
         return newRestaurant;
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import com.enums.StaffRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "staff")
@@ -38,6 +39,7 @@ public class Staff {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonIgnore
     private Restaurant restaurant;
 
     public Staff(String username, String password, StaffRole role, Restaurant restaurant) {
