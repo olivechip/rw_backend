@@ -26,7 +26,7 @@ public class StaffController {
 
     // **********************************
     // for testing only, remove in prod
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Staff>> getAllStaff() {
         List<Staff> staffList = staffService.getAllStaff();
         return ResponseEntity.ok(staffList);
