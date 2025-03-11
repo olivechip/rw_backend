@@ -11,6 +11,5 @@ import com.olivechip.restaurant_waitlist.entity.Restaurant;
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
     boolean existsByUsername(String username);
-
     List<Staff> findByRestaurant(Restaurant restaurant);
 }

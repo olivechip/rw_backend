@@ -19,12 +19,27 @@ public class RestaurantService {
     // creates a restaurant
     @Transactional
     public Restaurant createRestaurant(Restaurant restaurant) {
+        // validate that required fields are not null
         if (restaurant.getName() == null || restaurant.getEmail() == null ||
                 restaurant.getAddress() == null || restaurant.getPhoneNumber() == null) {
             throw new IllegalArgumentException(
                     "Restaurant must have name, email, address, and phone number");
         }
 
+        // check for duplicate restaurant name, email, or phone number
+        if (restaurantRepository.existsByName(restaurant.getName())) {
+            throw new IllegalArgumentException("Restaurant with this name already exists");
+        }
+
+        if (restaurantRepository.existsByEmail(restaurant.getEmail())) {
+            throw new IllegalArgumentException("Restaurant with this email already exists");
+        }
+
+        if (restaurantRepository.existsByPhoneNumber(restaurant.getPhoneNumber())) {
+            throw new IllegalArgumentException("Restaurant with this phone number already exists");
+        }
+
+        // if no duplicates are found, save the restaurant
         return restaurantRepository.save(restaurant);
     }
 
