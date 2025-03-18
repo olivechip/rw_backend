@@ -1,6 +1,7 @@
 package com.olivechip.restaurant_waitlist.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,6 +65,16 @@ public class StaffService {
         return staffRepository.findById(id).orElse(null);
     }
 
+    // retrieve staff members by restaurant
+    public List<Staff> getStaffByRestaurant(Restaurant restaurant) {
+        return staffRepository.findByRestaurant(restaurant);
+    }
+
+    // get staff by username
+    public Optional<Staff> getStaffByUsername(String username) {
+        return staffRepository.findByUsername(username);
+    }
+
     // update staff member if staff exists by id
     public Staff updateStaffById(Integer id, Staff staff) {
         Staff existingStaff = staffRepository.findById(id)
@@ -103,10 +114,5 @@ public class StaffService {
         Staff existingStaff = staffRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Staff not found with id: " + id));
         staffRepository.delete(existingStaff);
-    }
-
-    // retrieve staff members by restaurant
-    public List<Staff> getStaffByRestaurant(Restaurant restaurant) {
-        return staffRepository.findByRestaurant(restaurant);
     }
 }
