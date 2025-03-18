@@ -36,13 +36,13 @@ public class AuthController {
 
     @Autowired
     private StaffRepository staffRepository;
-    
+
     @GetMapping("/status")
     public ResponseEntity<Map<String, Object>> getAuthStatus() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.isAuthenticated() &&
-            authentication.getPrincipal() instanceof UserDetails) {
+                authentication.getPrincipal() instanceof UserDetails) {
             Map<String, Object> response = new HashMap<>();
             response.put("isLoggedIn", true);
             return ResponseEntity.ok(response);
