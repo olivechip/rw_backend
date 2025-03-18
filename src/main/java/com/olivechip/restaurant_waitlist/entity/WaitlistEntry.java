@@ -22,8 +22,12 @@ public class WaitlistEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
+
     // relationship and join annotation for JPA mapping used in JPA entities
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guest_id")
     @JsonBackReference
     private Guest guest;
@@ -40,7 +44,7 @@ public class WaitlistEntry {
 
     @Column(name = "completed_time")
     private LocalDateTime completedTime;
-    
+
     @Column(name = "canceled_time")
     private LocalDateTime canceledTime;
 

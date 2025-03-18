@@ -48,6 +48,9 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Staff> staff;
 
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WaitlistEntry> waitlistEntries;
+
     public Restaurant(String name, String address, String phoneNumber, String email) {
         this.name = name;
         this.address = address;

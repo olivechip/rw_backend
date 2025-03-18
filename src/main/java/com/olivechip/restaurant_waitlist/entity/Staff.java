@@ -51,5 +51,4 @@ public class Staff {
         this.role = role;
         this.restaurant = restaurant;
     }
-
 }

@@ -38,6 +38,7 @@ CREATE TABLE guests (
 
 CREATE TABLE waitlist_entries (
     id SERIAL PRIMARY KEY,
+    restaurant_id INT NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
     guest_id INT NOT NULL REFERENCES guests(id) ON DELETE CASCADE,
     status VARCHAR(20) NOT NULL CHECK (
         status IN ('WAITING', 'NOTIFIED', 'COMPLETED', 'CANCELED')
@@ -47,3 +48,7 @@ CREATE TABLE waitlist_entries (
     completed_time TIMESTAMP DEFAULT NULL,
     canceled_time TIMESTAMP DEFAULT NULL
 );
+
+CREATE UNIQUE INDEX unique_active_guest_waitlist_entry ON waitlist_entries (guest_id)
+WHERE
+    status IN ('WAITING', 'NOTIFIED');
