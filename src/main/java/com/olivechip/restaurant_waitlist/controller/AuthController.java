@@ -1,5 +1,7 @@
 package com.olivechip.restaurant_waitlist.controller;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,22 @@ public class AuthController {
 
     @Autowired
     private StaffRepository staffRepository;
+    
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, Object>> getAuthStatus() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated() &&
+            authentication.getPrincipal() instanceof UserDetails) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("isLoggedIn", true);
+            return ResponseEntity.ok(response);
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("isLoggedIn", false);
+            return ResponseEntity.ok(response);
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(HttpServletRequest request, @RequestBody LoginRequest loginRequest) {
