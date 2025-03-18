@@ -9,8 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
@@ -19,15 +18,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // enable this in production!
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                .anyRequest().permitAll())
-                        // .requestMatchers("/api/auth/**").permitAll()
-                        // .anyRequest().authenticated())
+                        .requestMatchers("/", "/register", "/login").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll())
-                .logout(withDefaults());
+                .logout(logout -> logout.permitAll())
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
         return http.build();
     }

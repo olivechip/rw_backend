@@ -54,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(HttpServletRequest request, @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Object> login(HttpServletRequest request, @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -69,7 +69,15 @@ public class AuthController {
                 if (staff.getRestaurant() != null) {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("resId", staff.getRestaurant().getId());
-                    return ResponseEntity.ok("Login successful");
+
+                    System.out.println("resId set in session: " + staff.getRestaurant().getId());
+
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("message", "Login successful");
+                    response.put("role", staff.getRole());
+                    response.put("restaurantId", staff.getRestaurant().getId());
+                    response.put("username", staff.getUsername());
+                    return ResponseEntity.ok(response);
                 } else {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                             .body("Restaurant information not found for user.");
@@ -77,7 +85,6 @@ public class AuthController {
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Staff member not found.");
             }
-
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
