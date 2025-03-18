@@ -41,8 +41,8 @@ public class AuthController {
     public ResponseEntity<Map<String, Object>> getAuthStatus() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && authentication.isAuthenticated() &&
-                authentication.getPrincipal() instanceof UserDetails) {
+        if (authentication != null && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof UserDetails) {
             Map<String, Object> response = new HashMap<>();
             response.put("isLoggedIn", true);
             return ResponseEntity.ok(response);
@@ -54,7 +54,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(HttpServletRequest request, @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Map<String, Object>> login(HttpServletRequest request,
+            @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -79,26 +80,37 @@ public class AuthController {
                     response.put("username", staff.getUsername());
                     return ResponseEntity.ok(response);
                 } else {
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                            .body("Restaurant information not found for user.");
+                    Map<String, Object> errorResponse = new HashMap<>();
+                    errorResponse.put("error", "Restaurant association not found");
+                    errorResponse.put("message", "Restaurant association not found for user.");
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
                 }
             } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Staff member not found.");
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Staff member not found");
+                errorResponse.put("message", "Staff member not found.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             }
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid credentials");
+            errorResponse.put("message", "Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        Map<String, Object> response = new HashMap<>();
         if (session != null) {
             session.invalidate();
             SecurityContextHolder.clearContext();
-            return ResponseEntity.ok("Logged out successfully");
+            response.put("message", "Logged out successfully");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.ok("No active session to logout from.");
+            response.put("message", "No active session to logout from.");
+            return ResponseEntity.ok(response);
         }
     }
 }
