@@ -21,8 +21,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // enable this in production!
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated())
+                .anyRequest().permitAll())
+                        // .requestMatchers("/api/auth/**").permitAll()
+                        // .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
                         .permitAll())
