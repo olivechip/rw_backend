@@ -86,7 +86,8 @@ public class StaffService {
             }
         }
         if (staff.getPassword() != null) {
-            existingStaff.setPassword(staff.getPassword());
+            String hashedPassword = passwordEncoder.encode(staff.getPassword());
+            existingStaff.setPassword(hashedPassword);
         }
         if (staff.getRole() != null) {
             existingStaff.setRole(staff.getRole());
