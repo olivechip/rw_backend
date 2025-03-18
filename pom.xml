@@ -62,6 +62,7 @@
 		<dependency> <!-- added this for in-memory database -->
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<version>2.2.220</version>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
