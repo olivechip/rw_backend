@@ -51,4 +51,4 @@ CREATE TABLE waitlist_entries (
 
 CREATE UNIQUE INDEX unique_active_guest_waitlist_entry ON waitlist_entries (guest_id)
 WHERE
-    status IN ('WAITING', 'NOTIFIED');
+    status IN ('WAITING', 'NOTIFIED') IS TRUE;
