@@ -33,7 +33,7 @@ public class Restaurant {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "cuisine_type")
+    @Column(name = "cuisine_type", nullable = false)
     private String cuisineType;
 
     @Column(name = "website")

@@ -12,7 +12,7 @@ CREATE TABLE restaurants (
     email VARCHAR(255) NOT NULL UNIQUE,
     address VARCHAR(255) NOT NULL,
     phone_number VARCHAR(20) NOT NULL UNIQUE,
-    cuisine_type VARCHAR(255),
+    cuisine_type VARCHAR(255) NOT NULL,
     website VARCHAR(255) UNIQUE,
     description TEXT,
     hours_of_operation TEXT,
