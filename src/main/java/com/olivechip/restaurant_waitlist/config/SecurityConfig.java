@@ -29,7 +29,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register").permitAll()
-                        .requestMatchers("/api/auth/status", "/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/status", "/api/auth/login", "/api/auth/register", "/api/restaurants/create", "/api/staff/create").permitAll()
+
+                        // for insomnia testing
+                        .requestMatchers("/api/restaurants", "/api/staff").permitAll()
+
                         .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll())
                 .sessionManagement(session -> session
