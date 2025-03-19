@@ -41,16 +41,30 @@ public class AuthController {
     public ResponseEntity<Map<String, Object>> getAuthStatus() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        Map<String, Object> response = new HashMap<>();
+
         if (authentication != null && authentication.isAuthenticated()
                 && authentication.getPrincipal() instanceof UserDetails) {
-            Map<String, Object> response = new HashMap<>();
+
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            Staff staff = (Staff) userDetails;
+
+            Map<String, Object> staffData = new HashMap<>();
+
+            staffData.put("firstName", staff.getFirstName());
+            staffData.put("lastName", staff.getLastName());
+            staffData.put("username", staff.getUsername());
+            staffData.put("role", staff.getRole());
+            staffData.put("restaurant", staff.getRestaurant());
+
             response.put("isLoggedIn", true);
-            return ResponseEntity.ok(response);
+            response.put("staff", staffData);
         } else {
-            Map<String, Object> response = new HashMap<>();
             response.put("isLoggedIn", false);
-            return ResponseEntity.ok(response);
         }
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
@@ -75,9 +89,12 @@ public class AuthController {
 
                     Map<String, Object> response = new HashMap<>();
                     response.put("message", "Login successful");
-                    response.put("role", staff.getRole());
-                    response.put("restaurantId", staff.getRestaurant().getId());
+                    response.put("firstName", staff.getFirstName());
+                    response.put("lastName", staff.getLastName());
                     response.put("username", staff.getUsername());
+                    response.put("role", staff.getRole());
+                    response.put("restaurant", staff.getRestaurant());
+
                     return ResponseEntity.ok(response);
                 } else {
                     Map<String, Object> errorResponse = new HashMap<>();
