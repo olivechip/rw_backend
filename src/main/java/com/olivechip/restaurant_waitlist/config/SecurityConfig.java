@@ -28,8 +28,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // enable in prod
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        // front end urls
                         .requestMatchers("/", "/login", "/register").permitAll()
-                        .requestMatchers("/api/auth/status", "/api/auth/login", "/api/auth/register", "/api/restaurants/create", "/api/staff/create").permitAll()
+
+                        // endpoints for auth and creation
+                        .requestMatchers("/api/auth/status", "/api/auth/login", "/api/auth/register",
+                                "/api/auth/logout",
+                                "/api/restaurants/create", "/api/staff/create")
+                        .permitAll()
 
                         // for insomnia testing
                         .requestMatchers("/api/restaurants", "/api/staff").permitAll()
@@ -37,7 +43,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll())
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/")));
 
         return http.build();
     }
