@@ -19,6 +19,8 @@ import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.service.StaffService;
 
+import com.olivechip.restaurant_waitlist.repository.RestaurantRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -31,6 +33,9 @@ public class StaffController {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Staff> createStaff(HttpServletRequest httpRequest, @RequestBody Map<String, Object> request) {
@@ -91,11 +96,13 @@ public class StaffController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping
+    @GetMapping("/restaurant/{restaurantId}")
     public ResponseEntity<List<Staff>> getStaffByRestaurant(
             @RequestParam Integer restaurantId) {
-        Restaurant restaurant = new Restaurant();
-        restaurant.setId(restaurantId);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
+        if (restaurant == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         List<Staff> staffList = staffService.getStaffByRestaurant(restaurant);
         return ResponseEntity.ok(staffList);
