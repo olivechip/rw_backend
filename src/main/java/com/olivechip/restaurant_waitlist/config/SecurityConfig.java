@@ -28,18 +28,22 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // enable in prod
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        // front end urls
+                        // front-end URLs
                         .requestMatchers("/", "/login", "/register").permitAll()
 
-                        // endpoints for auth and creation
-                        .requestMatchers("/api/auth/status", "/api/auth/login", "/api/auth/register",
-                                "/api/auth/logout",
-                                "/api/restaurants/create", "/api/staff/create")
-                        .permitAll()
+                        // authentication endpoints (public)
+                        .requestMatchers("/api/auth/**").permitAll()
 
-                        // for insomnia testing
-                        .requestMatchers("/api/restaurants", "/api/staff").permitAll()
+                        // public creation routes and waitlist
+                        .requestMatchers("/res/create", "/staff/create", "/api/waitlist/**").permitAll()
 
+                        // Restaurant, Guest, Staff endpoints (require authentication)
+                        .requestMatchers("/api/restaurants/**", "/api/guests/**", "/api/staff/**").authenticated()
+
+                        // any other API endpoints (require authentication)
+                        .requestMatchers("/api/**").authenticated()
+
+                        // any other request (require authentication)
                         .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll())
                 .sessionManagement(session -> session
