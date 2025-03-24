@@ -20,8 +20,10 @@ public class WaitlistEntryController {
     private WaitlistEntryService waitlistEntryService;
 
     @PostMapping("/create")
-    public ResponseEntity<WaitlistEntry> createGuestAndWaitlistEntry(@RequestBody Guest guest) {
-        WaitlistEntry createdEntry = waitlistEntryService.createGuestAndWaitlistEntry(guest);
+    public ResponseEntity<WaitlistEntry> createGuestAndWaitlistEntry(
+            @RequestBody Guest guest,
+            @RequestParam("resId") Integer resId) {
+        WaitlistEntry createdEntry = waitlistEntryService.createGuestAndWaitlistEntry(guest, resId);
         return new ResponseEntity<>(createdEntry, HttpStatus.CREATED);
     }
 

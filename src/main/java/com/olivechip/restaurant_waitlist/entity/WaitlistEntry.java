@@ -28,7 +28,7 @@ public class WaitlistEntry {
 
     // relationship and join annotation for JPA mapping used in JPA entities
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "guest_id")
+    @JoinColumn(name = "guest_id", nullable = false)
     @JsonBackReference
     private Guest guest;
 
@@ -48,7 +48,8 @@ public class WaitlistEntry {
     @Column(name = "canceled_time")
     private LocalDateTime canceledTime;
 
-    public WaitlistEntry(Guest guest, WaitlistStatus status, LocalDateTime joinTime) {
+    public WaitlistEntry(Restaurant restaurant, Guest guest, WaitlistStatus status, LocalDateTime joinTime) {
+        this.restaurant = restaurant;
         this.guest = guest;
         this.status = status;
         this.joinTime = joinTime;

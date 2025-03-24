@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.enums.WaitlistStatus;
 import com.olivechip.restaurant_waitlist.entity.Guest;
+import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
+import com.olivechip.restaurant_waitlist.repository.RestaurantRepository;
 import com.olivechip.restaurant_waitlist.repository.WaitlistEntryRepository;
 
 import jakarta.transaction.Transactional;
@@ -20,13 +22,20 @@ public class WaitlistEntryService {
     private GuestService guestService;
 
     @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
     private WaitlistEntryRepository waitlistEntryRepository;
 
     // create a new guest and waitlist entry
     @Transactional
-    public WaitlistEntry createGuestAndWaitlistEntry(Guest guest) {
+    public WaitlistEntry createGuestAndWaitlistEntry(Guest guest, Integer resId) {
         Guest newGuest = guestService.createGuest(guest);
-        WaitlistEntry entry = new WaitlistEntry(newGuest, WaitlistStatus.WAITING, LocalDateTime.now());
+        Restaurant restaurant = restaurantRepository.findById(resId).orElse(null);
+        if (restaurant == null) {
+            throw new IllegalArgumentException("Restaurant not found with id: " + resId);
+        }
+        WaitlistEntry entry = new WaitlistEntry(restaurant, newGuest, WaitlistStatus.WAITING, LocalDateTime.now());
 
         return waitlistEntryRepository.save(entry);
     }
