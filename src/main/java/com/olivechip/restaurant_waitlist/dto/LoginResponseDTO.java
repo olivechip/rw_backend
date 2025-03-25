@@ -2,21 +2,23 @@ package com.olivechip.restaurant_waitlist.dto;
 
 import com.enums.StaffRole;
 
-public class StaffLoginResponseDTO {
+public class LoginResponseDTO {
     private String message;
+    private Integer id;
     private String firstName;
     private String lastName;
     private String username;
     private StaffRole role;
     private Integer restaurantId;
 
-    public StaffLoginResponseDTO() {
+    public LoginResponseDTO() {
     }
 
-    public StaffLoginResponseDTO(String message, String firstName, String lastName, String username, StaffRole role,
+    public LoginResponseDTO(String message, Integer id, String firstName, String lastName, String username,
+            StaffRole role,
             Integer restaurantId) {
-
         this.message = message;
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -30,6 +32,14 @@ public class StaffLoginResponseDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {

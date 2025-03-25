@@ -1,24 +1,19 @@
 package com.olivechip.restaurant_waitlist.dto;
 
-import java.util.List;
-
 public class GuestDTO {
     private Integer id;
     private String name;
     private Integer partySize;
     private String phoneNumber;
-    private List<WaitlistEntryCombinedDTO> waitlistEntries;
 
     public GuestDTO() {
     }
 
-    public GuestDTO(Integer id, String name, Integer partySize, String phoneNumber,
-            List<WaitlistEntryCombinedDTO> waitlistEntries) {
+    public GuestDTO(Integer id, String name, Integer partySize, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.partySize = partySize;
         this.phoneNumber = phoneNumber;
-        this.waitlistEntries = waitlistEntries;
     }
 
     public Integer getId() {
@@ -51,13 +46,5 @@ public class GuestDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public List<WaitlistEntryCombinedDTO> getWaitlistEntries() {
-        return waitlistEntries;
-    }
-
-    public void setWaitlistEntries(List<WaitlistEntryCombinedDTO> waitlistEntries) {
-        this.waitlistEntries = waitlistEntries;
     }
 }

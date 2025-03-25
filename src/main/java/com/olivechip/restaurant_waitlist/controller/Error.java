@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Error {
-    
+
     public class CustomErrorController {
         @PostMapping("/error")
         public ResponseEntity<String> error() {

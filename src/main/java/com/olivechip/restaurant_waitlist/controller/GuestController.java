@@ -9,10 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.olivechip.restaurant_waitlist.dto.GuestDTO;
-import com.olivechip.restaurant_waitlist.dto.WaitlistEntryCombinedDTO;
 import com.olivechip.restaurant_waitlist.entity.Guest;
-import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.service.GuestService;
+import com.olivechip.restaurant_waitlist.util.GuestConverter;
 
 @RestController
 @RequestMapping("/api/guests")
@@ -22,43 +21,20 @@ public class GuestController {
     private GuestService guestService;
 
     @PostMapping("/create")
-    public ResponseEntity<Guest> createGuest(@RequestBody Guest guest) {
+    public ResponseEntity<GuestDTO> createGuest(@RequestBody Guest guest) {
         Guest createdGuest = guestService.createGuest(guest);
-        return new ResponseEntity<>(createdGuest, HttpStatus.CREATED);
+        GuestDTO guestDTO = GuestConverter.convertToGuestDto(createdGuest);
+        return new ResponseEntity<>(guestDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<GuestDTO>> getAllGuests() {
         List<Guest> guests = guestService.getAllGuests();
-        List<GuestDTO> dtos = guests.stream().map(this::convertToGuestDto)
+        List<GuestDTO> dtos = guests.stream()
+                .map(GuestConverter::convertToGuestDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(dtos);
-    }
-
-    private GuestDTO convertToGuestDto(Guest guest) {
-        List<WaitlistEntryCombinedDTO> waitlistEntries = guest.getWaitlistEntries().stream()
-                .map(this::convertToCombinedDto)
-                .collect(Collectors.toList());
-
-        return new GuestDTO(
-                guest.getId(),
-                guest.getName(),
-                guest.getPartySize(),
-                guest.getPhoneNumber(),
-                waitlistEntries);
-    }
-
-    private WaitlistEntryCombinedDTO convertToCombinedDto(WaitlistEntry entry) {
-        return new WaitlistEntryCombinedDTO(
-                entry.getId(),
-                entry.getRestaurant().getId(),
-                entry.getGuest().getId(),
-                entry.getStatus().name(),
-                entry.getJoinTime(),
-                entry.getNotifiedTime(),
-                entry.getCompletedTime(),
-                entry.getCanceledTime());
     }
 
     // DTO checks starting here
