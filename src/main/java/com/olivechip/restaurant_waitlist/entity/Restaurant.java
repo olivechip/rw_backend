@@ -2,7 +2,7 @@ package com.olivechip.restaurant_waitlist.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,7 +51,7 @@ public class Restaurant {
     private List<Staff> staff;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
+    @JsonManagedReference
     private List<WaitlistEntry> waitlistEntries;
 
     public Restaurant(String name, String address, String phoneNumber, String email) {
