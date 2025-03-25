@@ -61,6 +61,7 @@ public class GuestController {
                 entry.getCanceledTime());
     }
 
+    // DTO checks starting here
     @GetMapping("/{id}")
     public ResponseEntity<Guest> getGuestById(@PathVariable Integer id) {
         Guest guest = guestService.getGuestById(id);

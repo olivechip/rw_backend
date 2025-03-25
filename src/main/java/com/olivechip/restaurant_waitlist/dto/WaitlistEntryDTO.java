@@ -2,31 +2,32 @@ package com.olivechip.restaurant_waitlist.dto;
 
 import java.time.LocalDateTime;
 
-public class WaitlistEntryCombinedDTO {
+public class WaitlistEntryDTO {
+
     private Integer id;
-    private Integer restaurantId;
-    private Integer guestId;
     private String status;
     private LocalDateTime joinTime;
     private LocalDateTime notifiedTime;
     private LocalDateTime completedTime;
     private LocalDateTime canceledTime;
+    private Integer restaurantId;
+    private Integer guestId;
 
-    // Constructors
-    public WaitlistEntryCombinedDTO() {
+    public WaitlistEntryDTO() {
     }
 
-    public WaitlistEntryCombinedDTO(Integer id, Integer restaurantId, Integer guestId, String status,
+    public WaitlistEntryDTO(Integer id, String status,
             LocalDateTime joinTime, LocalDateTime notifiedTime, LocalDateTime completedTime,
-            LocalDateTime canceledTime) {
+            LocalDateTime canceledTime, Integer restaurantId, Integer guestId) {
         this.id = id;
-        this.restaurantId = restaurantId;
-        this.guestId = guestId;
+
         this.status = status;
         this.joinTime = joinTime;
         this.notifiedTime = notifiedTime;
         this.completedTime = completedTime;
         this.canceledTime = canceledTime;
+        this.restaurantId = restaurantId;
+        this.guestId = guestId;
     }
 
     public Integer getId() {
@@ -35,22 +36,6 @@ public class WaitlistEntryCombinedDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(Integer restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
-    public Integer getGuestId() {
-        return guestId;
-    }
-
-    public void setGuestId(Integer guestId) {
-        this.guestId = guestId;
     }
 
     public String getStatus() {
@@ -91,5 +76,21 @@ public class WaitlistEntryCombinedDTO {
 
     public void setCanceledTime(LocalDateTime canceledTime) {
         this.canceledTime = canceledTime;
+    }
+
+    public Integer getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Integer restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public Integer getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(Integer guestId) {
+        this.guestId = guestId;
     }
 }

@@ -56,7 +56,8 @@ public class StaffController {
 
         return ResponseEntity.ok(dtos);
     }
-
+    
+    // DTO checks starting here
     @GetMapping("/{id}")
     public ResponseEntity<Staff> getStaffById(@PathVariable Integer id) {
         Staff staff = staffService.getStaffById(id);

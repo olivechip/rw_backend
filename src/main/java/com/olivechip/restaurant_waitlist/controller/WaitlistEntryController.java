@@ -9,10 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.enums.WaitlistStatus;
-import com.olivechip.restaurant_waitlist.dto.WaitlistEntryCombinedDTO;
+import com.olivechip.restaurant_waitlist.dto.WaitlistEntryDTO;
 import com.olivechip.restaurant_waitlist.entity.Guest;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.service.WaitlistEntryService;
+import com.olivechip.restaurant_waitlist.util.WaitlistEntryConverter;
 
 @RestController
 @RequestMapping("/api/waitlist")
@@ -22,26 +23,18 @@ public class WaitlistEntryController {
     private WaitlistEntryService waitlistEntryService;
 
     @PostMapping("/create")
-    public ResponseEntity<WaitlistEntryCombinedDTO> createGuestAndWaitlistEntry(
+    public ResponseEntity<WaitlistEntryDTO> createGuestAndWaitlistEntry(
             @RequestBody Guest guest,
             @RequestParam("restaurantId") Integer restaurantId) {
         WaitlistEntry createdEntry = waitlistEntryService.createGuestAndWaitlistEntry(guest, restaurantId);
 
-        WaitlistEntryCombinedDTO dto = new WaitlistEntryCombinedDTO(
-                createdEntry.getId(),
-                createdEntry.getRestaurant().getId(),
-                createdEntry.getGuest().getId(),
-                createdEntry.getStatus().name(),
-                createdEntry.getJoinTime(),
-                createdEntry.getNotifiedTime(),
-                createdEntry.getCompletedTime(),
-                createdEntry.getCanceledTime());
+        WaitlistEntryDTO dto = WaitlistEntryConverter.convertToWaitlistEntryDto(createdEntry);
 
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<WaitlistEntryCombinedDTO>> getWaitlist(
+    public ResponseEntity<List<WaitlistEntryDTO>> getWaitlist(
             @RequestParam(value = "restaurantId", required = false) Integer restaurantId) {
 
         List<WaitlistEntry> waitlist;
@@ -52,24 +45,14 @@ public class WaitlistEntryController {
             waitlist = waitlistEntryService.getWaitlist();
         }
 
-        List<WaitlistEntryCombinedDTO> dtos = waitlist.stream().map(this::convertToCombinedDto)
+        List<WaitlistEntryDTO> dtos = waitlist.stream()
+                .map(WaitlistEntryConverter::convertToWaitlistEntryDto)
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(dtos);
     }
 
-    // only used in getWaitlist method
-    private WaitlistEntryCombinedDTO convertToCombinedDto(WaitlistEntry entry) {
-        return new WaitlistEntryCombinedDTO(
-                entry.getId(),
-                entry.getRestaurant().getId(),
-                entry.getGuest().getId(),
-                entry.getStatus().name(),
-                entry.getJoinTime(),
-                entry.getNotifiedTime(),
-                entry.getCompletedTime(),
-                entry.getCanceledTime());
-    }
-
+    // DTO checks starting here
     @GetMapping("/{guestId}")
     public ResponseEntity<WaitlistEntry> getWaitlistEntryByGuestId(@PathVariable Integer guestId) {
         WaitlistEntry entry = waitlistEntryService.getWaitlistEntryByGuestId(guestId);
