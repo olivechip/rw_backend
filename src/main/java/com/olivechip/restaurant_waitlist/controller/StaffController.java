@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.service.StaffService;
-import com.olivechip.restaurant_waitlist.repository.RestaurantRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -23,9 +21,6 @@ public class StaffController {
 
     @Autowired
     private StaffService staffService;
-
-    @Autowired
-    private RestaurantRepository restaurantRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Staff> createStaff(HttpServletRequest httpRequest, @RequestBody Map<String, Object> request) {
@@ -37,14 +32,20 @@ public class StaffController {
         return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
     }
 
-    // **********************************
-    // for testing only, remove in prod
     @GetMapping
-    public ResponseEntity<List<Staff>> getAllStaff() {
-        List<Staff> staffList = staffService.getAllStaff();
+    public ResponseEntity<List<Staff>> getAllStaff(
+            @RequestParam(value = "restaurantId", required = false) Integer restaurantId) {
+
+        List<Staff> staffList;
+
+        if (restaurantId == null) {
+            staffList = staffService.getAllStaff();
+        } else {
+            staffList = staffService.getStaffByRestaurantId(restaurantId);
+        }
+
         return ResponseEntity.ok(staffList);
     }
-    // **********************************
 
     @GetMapping("/{id}")
     public ResponseEntity<Staff> getStaffById(@PathVariable Integer id) {
@@ -67,17 +68,5 @@ public class StaffController {
     public ResponseEntity<Void> deleteStaffById(@PathVariable Integer id) {
         staffService.deleteStaffById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/restaurant/{restaurantId}")
-    public ResponseEntity<List<Staff>> getStaffByRestaurant(
-            @RequestParam Integer restaurantId) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
-        if (restaurant == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        List<Staff> staffList = staffService.getStaffByRestaurant(restaurant);
-        return ResponseEntity.ok(staffList);
     }
 }

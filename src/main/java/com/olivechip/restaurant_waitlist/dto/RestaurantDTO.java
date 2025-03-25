@@ -1,7 +1,5 @@
 package com.olivechip.restaurant_waitlist.dto;
 
-import java.util.List;
-
 public class RestaurantDTO {
     private Integer id;
     private String name;
@@ -12,15 +10,12 @@ public class RestaurantDTO {
     private String website;
     private String description;
     private String hoursOfOperation;
-    private List<StaffDTO> staff;
-    private List<WaitlistEntryCombinedDTO> waitlistEntries;
 
     public RestaurantDTO() {
     }
 
     public RestaurantDTO(Integer id, String name, String email, String address, String phoneNumber,
-            String cuisineType, String website, String description, String hoursOfOperation,
-            List<StaffDTO> staff, List<WaitlistEntryCombinedDTO> waitlistEntries) {
+            String cuisineType, String website, String description, String hoursOfOperation) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -30,8 +25,6 @@ public class RestaurantDTO {
         this.website = website;
         this.description = description;
         this.hoursOfOperation = hoursOfOperation;
-        this.staff = staff;
-        this.waitlistEntries = waitlistEntries;
     }
 
     public Integer getId() {
@@ -104,21 +97,5 @@ public class RestaurantDTO {
 
     public void setHoursOfOperation(String hoursOfOperation) {
         this.hoursOfOperation = hoursOfOperation;
-    }
-
-    public List<StaffDTO> getStaff() {
-        return staff;
-    }
-
-    public void setStaff(List<StaffDTO> staff) {
-        this.staff = staff;
-    }
-
-    public List<WaitlistEntryCombinedDTO> getWaitlistEntries() {
-        return waitlistEntries;
-    }
-
-    public void setWaitlistEntries(List<WaitlistEntryCombinedDTO> waitlistEntries) {
-        this.waitlistEntries = waitlistEntries;
     }
 }

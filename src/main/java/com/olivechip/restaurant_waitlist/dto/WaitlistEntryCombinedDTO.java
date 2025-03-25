@@ -29,7 +29,6 @@ public class WaitlistEntryCombinedDTO {
         this.canceledTime = canceledTime;
     }
 
-    // Getters and setters
     public Integer getId() {
         return id;
     }
