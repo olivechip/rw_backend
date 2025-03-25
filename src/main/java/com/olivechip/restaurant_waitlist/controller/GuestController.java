@@ -1,13 +1,17 @@
 package com.olivechip.restaurant_waitlist.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.olivechip.restaurant_waitlist.dto.GuestDTO;
+import com.olivechip.restaurant_waitlist.dto.WaitlistEntryCombinedDTO;
 import com.olivechip.restaurant_waitlist.entity.Guest;
+import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.service.GuestService;
 
 @RestController
@@ -24,9 +28,37 @@ public class GuestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Guest>> getAllGuests() {
+    public ResponseEntity<List<GuestDTO>> getAllGuests() {
         List<Guest> guests = guestService.getAllGuests();
-        return ResponseEntity.ok(guests);
+        List<GuestDTO> dtos = guests.stream().map(this::convertToGuestDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+    private GuestDTO convertToGuestDto(Guest guest) {
+        List<WaitlistEntryCombinedDTO> waitlistEntries = guest.getWaitlistEntries().stream()
+                .map(this::convertToCombinedDto)
+                .collect(Collectors.toList());
+
+        return new GuestDTO(
+                guest.getId(),
+                guest.getName(),
+                guest.getPartySize(),
+                guest.getPhoneNumber(),
+                waitlistEntries);
+    }
+
+    private WaitlistEntryCombinedDTO convertToCombinedDto(WaitlistEntry entry) {
+        return new WaitlistEntryCombinedDTO(
+                entry.getId(),
+                entry.getRestaurant().getId(),
+                entry.getGuest().getId(),
+                entry.getStatus().name(),
+                entry.getJoinTime(),
+                entry.getNotifiedTime(),
+                entry.getCompletedTime(),
+                entry.getCanceledTime());
     }
 
     @GetMapping("/{id}")

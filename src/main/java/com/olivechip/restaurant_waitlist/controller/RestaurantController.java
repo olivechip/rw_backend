@@ -1,13 +1,19 @@
 package com.olivechip.restaurant_waitlist.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.olivechip.restaurant_waitlist.dto.RestaurantDTO;
+import com.olivechip.restaurant_waitlist.dto.StaffDTO;
+import com.olivechip.restaurant_waitlist.dto.WaitlistEntryCombinedDTO;
 import com.olivechip.restaurant_waitlist.entity.Restaurant;
+import com.olivechip.restaurant_waitlist.entity.Staff;
+import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.service.RestaurantService;
 
 @RestController
@@ -24,9 +30,56 @@ public class RestaurantController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> getAllRestaurants() {
+    public ResponseEntity<List<RestaurantDTO>> getAllRestaurants() {
         List<Restaurant> restaurants = restaurantService.getAllRestaurants();
-        return ResponseEntity.ok(restaurants);
+        List<RestaurantDTO> dtos = restaurants.stream().map(this::convertToRestaurantDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+    private RestaurantDTO convertToRestaurantDto(Restaurant restaurant) {
+        List<StaffDTO> staffDtos = restaurant.getStaff().stream()
+                .map(this::convertToStaffDto)
+                .collect(Collectors.toList());
+
+        List<WaitlistEntryCombinedDTO> waitlistDtos = restaurant.getWaitlistEntries().stream()
+                .map(this::convertToWaitlistEntryDto)
+                .collect(Collectors.toList());
+
+        return new RestaurantDTO(
+                restaurant.getId(),
+                restaurant.getName(),
+                restaurant.getEmail(),
+                restaurant.getAddress(),
+                restaurant.getPhoneNumber(),
+                restaurant.getCuisineType(),
+                restaurant.getWebsite(),
+                restaurant.getDescription(),
+                restaurant.getHoursOfOperation(),
+                staffDtos,
+                waitlistDtos);
+    }
+
+    private StaffDTO convertToStaffDto(Staff staff) {
+        return new StaffDTO(
+                staff.getId(),
+                staff.getFirstName(),
+                staff.getLastName(),
+                staff.getUsername(),
+                staff.getRole());
+    }
+
+    private WaitlistEntryCombinedDTO convertToWaitlistEntryDto(WaitlistEntry entry) {
+        return new WaitlistEntryCombinedDTO(
+                entry.getId(),
+                null,
+                entry.getGuest().getId(),
+                entry.getStatus().name(),
+                entry.getJoinTime(),
+                entry.getNotifiedTime(),
+                entry.getCompletedTime(),
+                entry.getCanceledTime());
     }
 
     @GetMapping("/{id}")

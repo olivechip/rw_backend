@@ -2,8 +2,6 @@ package com.olivechip.restaurant_waitlist.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import jakarta.persistence.*;
 import lombok.*;
 
