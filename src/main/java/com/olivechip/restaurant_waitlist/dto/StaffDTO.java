@@ -8,16 +8,18 @@ public class StaffDTO {
     private String lastName;
     private String username;
     private StaffRole role;
+    private Integer restaurantId;
 
     public StaffDTO() {
     }
 
-    public StaffDTO(Integer id, String firstName, String lastName, String username, StaffRole role) {
+    public StaffDTO(Integer id, String firstName, String lastName, String username, StaffRole role, Integer restaurantId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.role = role;
+        this.restaurantId = restaurantId;
     }
 
     public Integer getId() {
@@ -58,5 +60,13 @@ public class StaffDTO {
 
     public void setRole(StaffRole role) {
         this.role = role;
+    }
+
+    public Integer getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Integer restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }

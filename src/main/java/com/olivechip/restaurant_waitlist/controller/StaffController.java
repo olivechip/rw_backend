@@ -2,6 +2,7 @@ package com.olivechip.restaurant_waitlist.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.olivechip.restaurant_waitlist.dto.StaffDTO;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.service.StaffService;
 
@@ -33,7 +34,7 @@ public class StaffController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Staff>> getAllStaff(
+    public ResponseEntity<List<StaffDTO>> getAllStaff(
             @RequestParam(value = "restaurantId", required = false) Integer restaurantId) {
 
         List<Staff> staffList;
@@ -44,7 +45,21 @@ public class StaffController {
             staffList = staffService.getStaffByRestaurantId(restaurantId);
         }
 
-        return ResponseEntity.ok(staffList);
+        List<StaffDTO> dtos = staffList.stream()
+                .map(this::convertToStaffDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+    private StaffDTO convertToStaffDto(Staff staff) {
+        return new StaffDTO(
+                staff.getId(),
+                staff.getFirstName(),
+                staff.getLastName(),
+                staff.getUsername(),
+                staff.getRole(),
+                staff.getRestaurant().getId());
     }
 
     @GetMapping("/{id}")
