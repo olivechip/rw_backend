@@ -45,6 +45,11 @@ public class WaitlistEntryService {
         return waitlistEntryRepository.findAll();
     }
 
+    // retrieve waitlist entries by restaurant id
+    public List<WaitlistEntry> getWaitlistByRestaurantId(Integer restaurantId) {
+        return waitlistEntryRepository.findWaitlistEntriesByRestaurantId(restaurantId);
+    }
+    
     // retrieve waitlist entry by guest id
     public WaitlistEntry getWaitlistEntryByGuestId(Integer guestId) {
         return waitlistEntryRepository.findWaitlistEntryByGuestId(guestId).orElse(null);

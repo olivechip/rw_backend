@@ -40,8 +40,16 @@ public class WaitlistEntryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WaitlistEntry>> getWaitlist() {
-        List<WaitlistEntry> waitlist = waitlistEntryService.getWaitlist();
+    public ResponseEntity<List<WaitlistEntry>> getWaitlist(
+            @RequestParam(value = "restaurantId", required = false) Integer restaurantId) {
+
+        List<WaitlistEntry> waitlist;
+
+        if (restaurantId != null) {
+            waitlist = waitlistEntryService.getWaitlistByRestaurantId(restaurantId);
+        } else {
+            waitlist = waitlistEntryService.getWaitlist();
+        }
         return ResponseEntity.ok(waitlist);
     }
 
