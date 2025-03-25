@@ -29,22 +29,22 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         // front-end URLs
-                        .requestMatchers("/", "/login", "/register").permitAll()
+                        .requestMatchers("/**").permitAll())
 
                         // authentication endpoints (public)
-                        .requestMatchers("/api/auth/**").permitAll()
+                        // .requestMatchers("/api/auth/**").permitAll()
 
                         // public creation routes and waitlist
-                        .requestMatchers("/res/create", "/staff/create", "/api/waitlist/**").permitAll()
+                        // .requestMatchers("/restaurants/create", "/staff/create", "/api/waitlist/**").permitAll()
 
                         // Restaurant, Guest, Staff endpoints (require authentication)
-                        .requestMatchers("/api/restaurants/**", "/api/guests/**", "/api/staff/**").authenticated()
+                        // .requestMatchers("/api/restaurants/**", "/api/guests/**", "/api/staff/**").authenticated()
 
                         // any other API endpoints (require authentication)
-                        .requestMatchers("/api/**").authenticated()
+                        // .requestMatchers("/api/**").authenticated()
 
                         // any other request (require authentication)
-                        .anyRequest().authenticated())
+                        // .anyRequest().authenticated())
                 .logout(logout -> logout.permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))

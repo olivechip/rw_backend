@@ -2,27 +2,20 @@ package com.olivechip.restaurant_waitlist.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.service.StaffService;
-
 import com.olivechip.restaurant_waitlist.repository.RestaurantRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/staff")
@@ -30,9 +23,6 @@ public class StaffController {
 
     @Autowired
     private StaffService staffService;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -44,24 +34,7 @@ public class StaffController {
 
         Staff createdStaff = staffService.createStaff(staff, restaurantId);
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(createdStaff.getUsername());
-        Optional<Staff> staffOptional = staffService.getStaffByUsername(createdStaff.getUsername());
-
-        if (staffOptional.isPresent()) {
-            Staff retrievedStaff = staffOptional.get();
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            HttpSession session = httpRequest.getSession(true);
-            session.setAttribute("resId", retrievedStaff.getRestaurant().getId());
-
-            return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
     }
 
     // **********************************
