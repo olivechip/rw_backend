@@ -15,6 +15,7 @@ public class StaffLoginResponseDTO {
 
     public StaffLoginResponseDTO(String message, String firstName, String lastName, String username, StaffRole role,
             Integer restaurantId) {
+
         this.message = message;
         this.firstName = firstName;
         this.lastName = lastName;

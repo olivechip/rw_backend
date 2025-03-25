@@ -16,6 +16,7 @@ public class RestaurantDTO {
 
     public RestaurantDTO(Integer id, String name, String email, String address, String phoneNumber,
             String cuisineType, String website, String description, String hoursOfOperation) {
+
         this.id = id;
         this.name = name;
         this.email = email;

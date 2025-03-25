@@ -13,7 +13,9 @@ public class StaffDTO {
     public StaffDTO() {
     }
 
-    public StaffDTO(Integer id, String firstName, String lastName, String username, StaffRole role, Integer restaurantId) {
+    public StaffDTO(Integer id, String firstName, String lastName, String username, StaffRole role,
+            Integer restaurantId) {
+
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -19,8 +19,8 @@ public class WaitlistEntryDTO {
     public WaitlistEntryDTO(Integer id, String status,
             LocalDateTime joinTime, LocalDateTime notifiedTime, LocalDateTime completedTime,
             LocalDateTime canceledTime, Integer restaurantId, Integer guestId) {
-        this.id = id;
 
+        this.id = id;
         this.status = status;
         this.joinTime = joinTime;
         this.notifiedTime = notifiedTime;
