@@ -1,5 +1,9 @@
 package com.olivechip.restaurant_waitlist.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +31,10 @@ public class Guest {
 
     @Column(name = "phone_number", nullable = false) // validation later
     private String phoneNumber;
+
+    @OneToMany(mappedBy = "guest", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<WaitlistEntry> waitlistEntries;
 
     public Guest(String name, Integer partySize, String phoneNumber) {
         this.name = name;

@@ -42,13 +42,11 @@ public class WaitlistEntryController {
     @GetMapping
     public ResponseEntity<List<WaitlistEntry>> getWaitlist(
             @RequestParam(value = "restaurantId", required = false) Integer restaurantId) {
-
         List<WaitlistEntry> waitlist;
-
-        if (restaurantId != null) {
-            waitlist = waitlistEntryService.getWaitlistByRestaurantId(restaurantId);
-        } else {
+        if (restaurantId == null) {
             waitlist = waitlistEntryService.getWaitlist();
+        } else {
+            waitlist = waitlistEntryService.getWaitlistByRestaurantId(restaurantId);
         }
         return ResponseEntity.ok(waitlist);
     }
