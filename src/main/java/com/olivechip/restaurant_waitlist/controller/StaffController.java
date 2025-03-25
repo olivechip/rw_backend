@@ -9,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.olivechip.restaurant_waitlist.dto.StaffDTO;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.service.StaffService;
-
-import jakarta.servlet.http.HttpServletRequest;
+import com.olivechip.restaurant_waitlist.util.StaffConverter;
 
 @RestController
 @RequestMapping("/api/staff")
@@ -24,13 +26,16 @@ public class StaffController {
     private StaffService staffService;
 
     @PostMapping("/create")
-    public ResponseEntity<Staff> createStaff(HttpServletRequest httpRequest, @RequestBody Map<String, Object> request) {
+    public ResponseEntity<StaffDTO> createStaff(HttpServletRequest httpRequest,
+            @RequestBody Map<String, Object> request) {
         Staff staff = new ObjectMapper().convertValue(request.get("staff"), Staff.class);
         Integer restaurantId = (Integer) request.get("restaurantId");
 
         Staff createdStaff = staffService.createStaff(staff, restaurantId);
 
-        return new ResponseEntity<>(createdStaff, HttpStatus.CREATED);
+        StaffDTO staffDTO = StaffConverter.convertToStaffDto(createdStaff);
+
+        return new ResponseEntity<>(staffDTO, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -46,20 +51,10 @@ public class StaffController {
         }
 
         List<StaffDTO> dtos = staffList.stream()
-                .map(this::convertToStaffDto)
+                .map(StaffConverter::convertToStaffDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(dtos);
-    }
-
-    private StaffDTO convertToStaffDto(Staff staff) {
-        return new StaffDTO(
-                staff.getId(),
-                staff.getFirstName(),
-                staff.getLastName(),
-                staff.getUsername(),
-                staff.getRole(),
-                staff.getRestaurant().getId());
     }
 
     @GetMapping("/{id}")
