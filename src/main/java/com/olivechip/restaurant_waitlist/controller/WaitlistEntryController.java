@@ -1,6 +1,7 @@
 package com.olivechip.restaurant_waitlist.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,15 +41,33 @@ public class WaitlistEntryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WaitlistEntry>> getWaitlist(
+    public ResponseEntity<List<WaitlistEntryCombinedDTO>> getWaitlist(
             @RequestParam(value = "restaurantId", required = false) Integer restaurantId) {
+
         List<WaitlistEntry> waitlist;
-        if (restaurantId == null) {
-            waitlist = waitlistEntryService.getWaitlist();
-        } else {
+
+        if (restaurantId != null) {
             waitlist = waitlistEntryService.getWaitlistByRestaurantId(restaurantId);
+        } else {
+            waitlist = waitlistEntryService.getWaitlist();
         }
-        return ResponseEntity.ok(waitlist);
+
+        List<WaitlistEntryCombinedDTO> dtos = waitlist.stream().map(this::convertToCombinedDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(dtos);
+    }
+
+    // only used in getWaitlist method
+    private WaitlistEntryCombinedDTO convertToCombinedDto(WaitlistEntry entry) {
+        return new WaitlistEntryCombinedDTO(
+                entry.getId(),
+                entry.getRestaurant().getId(),
+                entry.getGuest().getId(),
+                entry.getStatus().name(),
+                entry.getJoinTime(),
+                entry.getNotifiedTime(),
+                entry.getCompletedTime(),
+                entry.getCanceledTime());
     }
 
     @GetMapping("/{guestId}")
