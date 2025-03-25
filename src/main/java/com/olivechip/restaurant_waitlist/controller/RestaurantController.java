@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.olivechip.restaurant_waitlist.dto.RestaurantDTO;
 import com.olivechip.restaurant_waitlist.entity.Restaurant;
 import com.olivechip.restaurant_waitlist.service.RestaurantService;
+import com.olivechip.restaurant_waitlist.util.RestaurantConverter;
 
 @RestController
 @RequestMapping("/api/restaurants")
@@ -20,32 +21,20 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @PostMapping("/create")
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
+    public ResponseEntity<RestaurantDTO> createRestaurant(@RequestBody Restaurant restaurant) {
         Restaurant createdRestaurant = restaurantService.createRestaurant(restaurant);
-        return new ResponseEntity<>(createdRestaurant, HttpStatus.CREATED);
+        RestaurantDTO dto = RestaurantConverter.convertToRestaurantDto(createdRestaurant);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<RestaurantDTO>> getAllRestaurants() {
         List<Restaurant> restaurants = restaurantService.getAllRestaurants();
         List<RestaurantDTO> dtos = restaurants.stream()
-                .map(this::convertToRestaurantDto)
+                .map(RestaurantConverter::convertToRestaurantDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(dtos);
-    }
-
-    private RestaurantDTO convertToRestaurantDto(Restaurant restaurant) {
-        return new RestaurantDTO(
-                restaurant.getId(),
-                restaurant.getName(),
-                restaurant.getEmail(),
-                restaurant.getAddress(),
-                restaurant.getPhoneNumber(),
-                restaurant.getCuisineType(),
-                restaurant.getWebsite(),
-                restaurant.getDescription(),
-                restaurant.getHoursOfOperation());
     }
 
     // DTO checks starting here
