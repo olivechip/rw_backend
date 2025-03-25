@@ -24,6 +24,7 @@ public class WaitlistEntry {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @JsonBackReference
     private Restaurant restaurant;
 
     // relationship and join annotation for JPA mapping used in JPA entities
