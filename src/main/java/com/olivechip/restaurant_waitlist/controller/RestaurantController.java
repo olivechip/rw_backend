@@ -48,6 +48,7 @@ public class RestaurantController {
                 restaurant.getHoursOfOperation());
     }
 
+    // this needs to return a RestaurantDTO or check if even needed
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> getRestaurantById(@PathVariable Integer id) {
         Restaurant restaurant = restaurantService.getRestaurantById(id);

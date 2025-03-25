@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import com.olivechip.restaurant_waitlist.dto.LoginRequest;
+import com.olivechip.restaurant_waitlist.dto.StaffLoginResponseDTO;
 import com.olivechip.restaurant_waitlist.entity.Staff;
 import com.olivechip.restaurant_waitlist.repository.StaffRepository;
 
@@ -51,7 +52,6 @@ public class AuthController {
             Staff staff = (Staff) userDetails;
 
             Map<String, Object> staffData = new HashMap<>();
-
             staffData.put("firstName", staff.getFirstName());
             staffData.put("lastName", staff.getLastName());
             staffData.put("username", staff.getUsername());
@@ -68,7 +68,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(HttpServletRequest request,
+    public ResponseEntity<StaffLoginResponseDTO> login(HttpServletRequest request,
             @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -87,32 +87,40 @@ public class AuthController {
 
                     System.out.println("restaurantId set in session: " + staff.getRestaurant().getId());
 
-                    Map<String, Object> response = new HashMap<>();
-                    response.put("message", "Login successful");
-                    response.put("firstName", staff.getFirstName());
-                    response.put("lastName", staff.getLastName());
-                    response.put("username", staff.getUsername());
-                    response.put("role", staff.getRole());
-                    response.put("restaurant", staff.getRestaurant());
-
+                    StaffLoginResponseDTO response = new StaffLoginResponseDTO(
+                            "Login successful",
+                            staff.getFirstName(),
+                            staff.getLastName(),
+                            staff.getUsername(),
+                            staff.getRole(),
+                            staff.getRestaurant().getId());
                     return ResponseEntity.ok(response);
                 } else {
-                    Map<String, Object> errorResponse = new HashMap<>();
-                    errorResponse.put("error", "Restaurant association not found");
-                    errorResponse.put("message", "Restaurant association not found for user.");
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new StaffLoginResponseDTO(
+                            "Restaurant association not found",
+                            null,
+                            null,
+                            null,
+                            null,
+                            null));
                 }
             } else {
-                Map<String, Object> errorResponse = new HashMap<>();
-                errorResponse.put("error", "Staff member not found");
-                errorResponse.put("message", "Staff member not found.");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new StaffLoginResponseDTO(
+                        "Staff member not found",
+                        null,
+                        null,
+                        null,
+                        null,
+                        null));
             }
         } catch (BadCredentialsException e) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid credentials");
-            errorResponse.put("message", "Invalid credentials");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new StaffLoginResponseDTO(
+                    "Invalid credentials",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null));
         }
     }
 
