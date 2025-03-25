@@ -23,9 +23,17 @@ public class GuestController {
         return new ResponseEntity<>(createdGuest, HttpStatus.CREATED);
     }
 
+    // if not param is provided, return all guests
     @GetMapping
-    public ResponseEntity<List<Guest>> getAllGuests() {
-        List<Guest> guests = guestService.getAllGuests();
+    public ResponseEntity<List<Guest>> getGuestsByRestaurant(@RequestParam(required = false) Integer resId) {
+        List<Guest> guests;
+
+        if (resId != null) {
+            guests = guestService.getGuestsByRestaurant(resId);
+        } else {
+            guests = guestService.getAllGuests();
+        }
+
         return ResponseEntity.ok(guests);
     }
 
