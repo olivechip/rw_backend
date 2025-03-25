@@ -40,14 +40,14 @@ public class WaitlistEntryService {
         return waitlistEntryRepository.save(entry);
     }
 
-    // retrieve waitlist entry by guest id
-    public WaitlistEntry getWaitlistEntryByGuestId(Integer guestId) {
-        return waitlistEntryRepository.findWaitlistEntryByGuestId(guestId).orElse(null);
-    }
-
     // retrieve all waitlist entries
     public List<WaitlistEntry> getWaitlist() {
         return waitlistEntryRepository.findAll();
+    }
+
+    // retrieve waitlist entry by guest id
+    public WaitlistEntry getWaitlistEntryByGuestId(Integer guestId) {
+        return waitlistEntryRepository.findWaitlistEntryByGuestId(guestId).orElse(null);
     }
 
     // update waitlist entry status by guest id AND new status

@@ -27,11 +27,6 @@ public class GuestService {
         return guestRepository.findAll();
     }
 
-    // retrieve guests by restaurant id
-    public List<Guest> getGuestsByRestaurant(Integer resId) {
-        return guestRepository.findGuestsByRestaurantId(resId);
-    }
-
     // retrieve guest by id
     public Guest getGuestById(Integer id) {
         return guestRepository.findById(id).orElse(null);

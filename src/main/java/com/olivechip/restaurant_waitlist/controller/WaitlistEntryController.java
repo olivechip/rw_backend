@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.enums.WaitlistStatus;
+import com.olivechip.restaurant_waitlist.dto.WaitlistEntryCombinedDTO;
 import com.olivechip.restaurant_waitlist.entity.Guest;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
 import com.olivechip.restaurant_waitlist.service.WaitlistEntryService;
@@ -20,11 +21,22 @@ public class WaitlistEntryController {
     private WaitlistEntryService waitlistEntryService;
 
     @PostMapping("/create")
-    public ResponseEntity<WaitlistEntry> createGuestAndWaitlistEntry(
+    public ResponseEntity<WaitlistEntryCombinedDTO> createGuestAndWaitlistEntry(
             @RequestBody Guest guest,
             @RequestParam("resId") Integer resId) {
         WaitlistEntry createdEntry = waitlistEntryService.createGuestAndWaitlistEntry(guest, resId);
-        return new ResponseEntity<>(createdEntry, HttpStatus.CREATED);
+
+        WaitlistEntryCombinedDTO dto = new WaitlistEntryCombinedDTO(
+                createdEntry.getId(),
+                createdEntry.getRestaurant().getId(),
+                createdEntry.getGuest().getId(),
+                createdEntry.getStatus().name(),
+                createdEntry.getJoinTime(),
+                createdEntry.getNotifiedTime(),
+                createdEntry.getCompletedTime(),
+                createdEntry.getCanceledTime());
+
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     @GetMapping
