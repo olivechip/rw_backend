@@ -22,17 +22,6 @@ public class WaitlistEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    @JsonBackReference
-    private Restaurant restaurant;
-
-    // relationship and join annotation for JPA mapping used in JPA entities
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "guest_id", nullable = false)
-    @JsonBackReference
-    private Guest guest;
-
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private WaitlistStatus status;
@@ -48,6 +37,16 @@ public class WaitlistEntry {
 
     @Column(name = "canceled_time")
     private LocalDateTime canceledTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    // @JsonBackReference
+    private Restaurant restaurant;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guest_id", nullable = false)
+    @JsonBackReference
+    private Guest guest;
 
     public WaitlistEntry(Restaurant restaurant, Guest guest, WaitlistStatus status, LocalDateTime joinTime) {
         this.restaurant = restaurant;

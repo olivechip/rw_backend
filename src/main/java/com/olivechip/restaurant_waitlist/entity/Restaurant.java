@@ -51,7 +51,7 @@ public class Restaurant {
     private List<Staff> staff;
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    // @JsonManagedReference
     private List<WaitlistEntry> waitlistEntries;
 
     public Restaurant(String name, String address, String phoneNumber, String email) {
