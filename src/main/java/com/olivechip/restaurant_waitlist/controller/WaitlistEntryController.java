@@ -24,8 +24,8 @@ public class WaitlistEntryController {
     @PostMapping("/create")
     public ResponseEntity<WaitlistEntryCombinedDTO> createGuestAndWaitlistEntry(
             @RequestBody Guest guest,
-            @RequestParam("resId") Integer resId) {
-        WaitlistEntry createdEntry = waitlistEntryService.createGuestAndWaitlistEntry(guest, resId);
+            @RequestParam("restaurantId") Integer restaurantId) {
+        WaitlistEntry createdEntry = waitlistEntryService.createGuestAndWaitlistEntry(guest, restaurantId);
 
         WaitlistEntryCombinedDTO dto = new WaitlistEntryCombinedDTO(
                 createdEntry.getId(),

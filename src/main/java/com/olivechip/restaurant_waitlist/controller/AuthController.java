@@ -83,9 +83,9 @@ public class AuthController {
                 Staff staff = staffOptional.get();
                 if (staff.getRestaurant() != null) {
                     HttpSession session = request.getSession(true);
-                    session.setAttribute("resId", staff.getRestaurant().getId());
+                    session.setAttribute("restaurantId", staff.getRestaurant().getId());
 
-                    System.out.println("resId set in session: " + staff.getRestaurant().getId());
+                    System.out.println("restaurantId set in session: " + staff.getRestaurant().getId());
 
                     Map<String, Object> response = new HashMap<>();
                     response.put("message", "Login successful");

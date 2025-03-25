@@ -29,11 +29,11 @@ public class WaitlistEntryService {
 
     // create a new guest and waitlist entry
     @Transactional
-    public WaitlistEntry createGuestAndWaitlistEntry(Guest guest, Integer resId) {
+    public WaitlistEntry createGuestAndWaitlistEntry(Guest guest, Integer restaurantId) {
         Guest newGuest = guestService.createGuest(guest);
-        Restaurant restaurant = restaurantRepository.findById(resId).orElse(null);
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
         if (restaurant == null) {
-            throw new IllegalArgumentException("Restaurant not found with id: " + resId);
+            throw new IllegalArgumentException("Restaurant not found with id: " + restaurantId);
         }
         WaitlistEntry entry = new WaitlistEntry(restaurant, newGuest, WaitlistStatus.WAITING, LocalDateTime.now());
 
