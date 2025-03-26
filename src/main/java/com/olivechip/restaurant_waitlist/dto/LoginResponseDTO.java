@@ -1,29 +1,18 @@
 package com.olivechip.restaurant_waitlist.dto;
 
-import com.enums.StaffRole;
-
 public class LoginResponseDTO {
+
     private String message;
-    private Integer id;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private StaffRole role;
-    private Integer restaurantId;
+    private StaffDTO staff;
+    private RestaurantDTO restaurant;
 
     public LoginResponseDTO() {
     }
 
-    public LoginResponseDTO(String message, Integer id, String firstName, String lastName, String username,
-            StaffRole role,
-            Integer restaurantId) {
+    public LoginResponseDTO(String message, StaffDTO staff, RestaurantDTO restaurant) {
         this.message = message;
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.role = role;
-        this.restaurantId = restaurantId;
+        this.staff = staff;
+        this.restaurant = restaurant;
     }
 
     public String getMessage() {
@@ -34,51 +23,19 @@ public class LoginResponseDTO {
         this.message = message;
     }
 
-    public Integer getId() {
-        return id;
+    public StaffDTO getStaff() {
+        return staff;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setStaff(StaffDTO staff) {
+        this.staff = staff;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public RestaurantDTO getRestaurant() {
+        return restaurant;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public StaffRole getRole() {
-        return role;
-    }
-
-    public void setRole(StaffRole role) {
-        this.role = role;
-    }
-
-    public Integer getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(Integer restaurantId) {
-        this.restaurantId = restaurantId;
+    public void setRestaurant(RestaurantDTO restaurant) {
+        this.restaurant = restaurant;
     }
 }

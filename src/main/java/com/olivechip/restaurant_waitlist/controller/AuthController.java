@@ -68,18 +68,19 @@ public class AuthController {
                     HttpSession session = request.getSession(true);
                     session.setAttribute("restaurantId", staff.getRestaurant().getId());
                     System.out.println("restaurantId set in session: " + staff.getRestaurant().getId());
+
                     return ResponseEntity.ok(AuthConverter.convertToLoginResponseDto(staff));
                 } else {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LoginResponseDTO(
-                            "Restaurant association not found", null, null, null, null, null, null));
+                            "Restaurant association not found", null, null));
                 }
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new LoginResponseDTO("Staff member not found", null, null, null, null, null, null));
+                        .body(new LoginResponseDTO("Staff member not found", null, null));
             }
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new LoginResponseDTO("Invalid credentials", null, null, null, null, null, null));
+                    .body(new LoginResponseDTO("Invalid credentials", null, null));
         }
     }
 
