@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.enums.WaitlistStatus;
 import com.olivechip.restaurant_waitlist.dto.WaitlistEntryDTO;
+import com.olivechip.restaurant_waitlist.dto.WaitlistWithGuestDTO;
 import com.olivechip.restaurant_waitlist.entity.Guest;
 import com.olivechip.restaurant_waitlist.entity.WaitlistEntry;
+import com.olivechip.restaurant_waitlist.service.GuestService;
 import com.olivechip.restaurant_waitlist.service.WaitlistEntryService;
 import com.olivechip.restaurant_waitlist.util.WaitlistEntryConverter;
+import com.olivechip.restaurant_waitlist.util.WaitlistWithGuestConverter;
 
 @RestController
 @RequestMapping("/api/waitlist")
@@ -22,6 +25,10 @@ public class WaitlistEntryController {
     @Autowired
     private WaitlistEntryService waitlistEntryService;
 
+    @Autowired
+    private GuestService guestService;
+
+    // create a guest and waitlist entry
     @PostMapping("/create")
     public ResponseEntity<WaitlistEntryDTO> createGuestAndWaitlistEntry(
             @RequestBody Guest guest,
@@ -33,20 +40,31 @@ public class WaitlistEntryController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
+    // get all waitlist entries
     @GetMapping
-    public ResponseEntity<List<WaitlistEntryDTO>> getWaitlist(
-            @RequestParam(value = "restaurantId", required = false) Integer restaurantId) {
+    public ResponseEntity<List<WaitlistEntryDTO>> getWaitlist() {
 
-        List<WaitlistEntry> waitlist;
-
-        if (restaurantId != null) {
-            waitlist = waitlistEntryService.getWaitlistByRestaurantId(restaurantId);
-        } else {
-            waitlist = waitlistEntryService.getWaitlist();
-        }
+        List<WaitlistEntry> waitlist = waitlistEntryService.getWaitlist();
 
         List<WaitlistEntryDTO> dtos = waitlist.stream()
                 .map(WaitlistEntryConverter::convertToWaitlistEntryDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+    // get waitlist by restaurant id
+    @GetMapping("/restaurants/{restaurantId}")
+    public ResponseEntity<List<WaitlistWithGuestDTO>> getWaitlistByRestaurant(
+            @PathVariable("restaurantId") Integer restaurantId) {
+
+        List<WaitlistEntry> waitlist = waitlistEntryService.getWaitlistByRestaurantId(restaurantId);
+
+        List<WaitlistWithGuestDTO> dtos = waitlist.stream()
+                .map(entry -> {
+                    Guest guest = guestService.getGuestById(entry.getGuest().getId());
+                    return WaitlistWithGuestConverter.convertToWaitlistWithGuestDto(entry, guest);
+                })
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(dtos);

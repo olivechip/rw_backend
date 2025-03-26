@@ -8,7 +8,7 @@ public class WaitlistEntryConverter {
     public static WaitlistEntryDTO convertToWaitlistEntryDto(WaitlistEntry entry) {
         return new WaitlistEntryDTO(
                 entry.getId(),
-                entry.getStatus().name(),
+                entry.getStatus(),
                 entry.getJoinTime(),
                 entry.getNotifiedTime(),
                 entry.getCompletedTime(),

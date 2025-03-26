@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.enums.WaitlistStatus;
 
-public class WaitlistEntryDTO {
+public class WaitlistWithGuestDTO {
 
     private Integer id;
     private WaitlistStatus status;
@@ -13,14 +13,14 @@ public class WaitlistEntryDTO {
     private LocalDateTime completedTime;
     private LocalDateTime canceledTime;
     private Integer restaurantId;
-    private Integer guestId;
+    private GuestDTO guest;
 
-    public WaitlistEntryDTO() {
+    public WaitlistWithGuestDTO() {
     }
 
-    public WaitlistEntryDTO(Integer id, WaitlistStatus status,
+    public WaitlistWithGuestDTO(Integer id, WaitlistStatus status,
             LocalDateTime joinTime, LocalDateTime notifiedTime, LocalDateTime completedTime,
-            LocalDateTime canceledTime, Integer restaurantId, Integer guestId) {
+            LocalDateTime canceledTime, Integer restaurantId, GuestDTO guest) {
 
         this.id = id;
         this.status = status;
@@ -29,7 +29,7 @@ public class WaitlistEntryDTO {
         this.completedTime = completedTime;
         this.canceledTime = canceledTime;
         this.restaurantId = restaurantId;
-        this.guestId = guestId;
+        this.guest = guest;
     }
 
     public Integer getId() {
@@ -88,11 +88,60 @@ public class WaitlistEntryDTO {
         this.restaurantId = restaurantId;
     }
 
-    public Integer getGuestId() {
-        return guestId;
+    public GuestDTO getGuest() {
+        return guest;
     }
 
-    public void setGuestId(Integer guestId) {
-        this.guestId = guestId;
+    public void setGuest(GuestDTO guest) {
+        this.guest = guest;
+    }
+
+    public static class GuestDTO {
+        private Integer id;
+        private String name;
+        private Integer partySize;
+        private String phoneNumber;
+
+        public GuestDTO(Integer id, String name, Integer partySize, String phoneNumber) {
+            this.id = id;
+            this.name = name;
+            this.partySize = partySize;
+            this.phoneNumber = phoneNumber;
+        }
+
+        public GuestDTO() {
+        };
+
+        public Integer getId() {
+            return id;
+        };
+
+        public void setId(Integer id) {
+            this.id = id;
+        };
+
+        public String getName() {
+            return name;
+        };
+
+        public void setName(String name) {
+            this.name = name;
+        };
+
+        public Integer getPartySize() {
+            return partySize;
+        };
+
+        public void setPartySize(Integer partySize) {
+            this.partySize = partySize;
+        };
+
+        public String getPhoneNumber() {
+            return phoneNumber;
+        };
+
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        };
     }
 }
