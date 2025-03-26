@@ -1,5 +1,7 @@
 package com.olivechip.restaurant_waitlist.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AuthStatusDTO {
     private boolean isLoggedIn;
     private StaffDTO staff;
@@ -14,6 +16,7 @@ public class AuthStatusDTO {
         this.restaurant = restaurant;
     }
 
+    @JsonProperty("isLoggedIn")
     public boolean isLoggedIn() {
         return isLoggedIn;
     }
