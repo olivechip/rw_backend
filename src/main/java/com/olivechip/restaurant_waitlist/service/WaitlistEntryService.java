@@ -49,18 +49,18 @@ public class WaitlistEntryService {
     public List<WaitlistEntry> getWaitlistByRestaurantId(Integer restaurantId) {
         return waitlistEntryRepository.findWaitlistEntriesByRestaurantId(restaurantId);
     }
-    
-    // retrieve waitlist entry by guest id
-    public WaitlistEntry getWaitlistEntryByGuestId(Integer guestId) {
-        return waitlistEntryRepository.findWaitlistEntryByGuestId(guestId).orElse(null);
+
+    // retrieve waitlist entry by id
+    public WaitlistEntry getWaitlistEntryById(Integer id) {
+        return waitlistEntryRepository.findById(id).orElse(null);
     }
 
     // update waitlist entry status by guest id AND new status
     @Transactional
-    public WaitlistEntry updateWaitlistEntryByGuestId(Integer guestId, WaitlistStatus status) {
-        WaitlistEntry entry = getWaitlistEntryByGuestId(guestId);
+    public WaitlistEntry updateWaitlistEntryById(Integer id, WaitlistStatus status) {
+        WaitlistEntry entry = getWaitlistEntryById(id);
         if (entry == null) {
-            throw new IllegalArgumentException("Waitlist entry not found for guest: " + guestId);
+            throw new IllegalArgumentException("Waitlist entry not found for id: " + id);
         }
         entry.setStatus(status);
 
@@ -85,12 +85,15 @@ public class WaitlistEntryService {
 
     // delete guest and waitlist entry by guest id
     @Transactional
-    public void deleteGuestAndWaitlistEntry(Integer guestId) {
-        WaitlistEntry entry = getWaitlistEntryByGuestId(guestId);
+    public void deleteGuestAndWaitlistEntry(Integer id) {
+        WaitlistEntry entry = getWaitlistEntryById(id);
         if (entry == null) {
-            throw new IllegalArgumentException("Waitlist entry not found for guest: " + guestId);
+            throw new IllegalArgumentException("Waitlist entry not found for id: " + id);
         }
+
+        Integer guestId = entry.getGuest().getId();
         waitlistEntryRepository.delete(entry);
         guestService.deleteGuestById(guestId);
+
     }
 }

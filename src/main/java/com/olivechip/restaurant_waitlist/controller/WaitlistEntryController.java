@@ -28,7 +28,6 @@ public class WaitlistEntryController {
     @Autowired
     private GuestService guestService;
 
-    // create a guest and waitlist entry
     @PostMapping("/create")
     public ResponseEntity<WaitlistEntryDTO> createGuestAndWaitlistEntry(
             @RequestBody Guest guest,
@@ -40,7 +39,6 @@ public class WaitlistEntryController {
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
-    // get all waitlist entries
     @GetMapping
     public ResponseEntity<List<WaitlistEntryDTO>> getWaitlist() {
 
@@ -53,7 +51,6 @@ public class WaitlistEntryController {
         return ResponseEntity.ok(dtos);
     }
 
-    // get waitlist by restaurant id
     @GetMapping("/restaurants/{restaurantId}")
     public ResponseEntity<List<WaitlistWithGuestDTO>> getWaitlistByRestaurant(
             @PathVariable("restaurantId") Integer restaurantId) {
@@ -70,27 +67,28 @@ public class WaitlistEntryController {
         return ResponseEntity.ok(dtos);
     }
 
-    // DTO checks starting here
-    @GetMapping("/{guestId}")
-    public ResponseEntity<WaitlistEntry> getWaitlistEntryByGuestId(@PathVariable Integer guestId) {
-        WaitlistEntry entry = waitlistEntryService.getWaitlistEntryByGuestId(guestId);
+    @GetMapping("/{id}")
+    public ResponseEntity<WaitlistEntryDTO> getWaitlistEntryById(@PathVariable Integer id) {
+        WaitlistEntry entry = waitlistEntryService.getWaitlistEntryById(id);
         if (entry == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(entry);
+        WaitlistEntryDTO dto = WaitlistEntryConverter.convertToWaitlistEntryDto(entry);
+        return ResponseEntity.ok(dto);
     }
 
-    @PutMapping("/{guestId}/{status}")
-    public ResponseEntity<WaitlistEntry> updateWaitlistEntryByGuestId(
-            @PathVariable Integer guestId,
-            @PathVariable WaitlistStatus status) {
-        WaitlistEntry updatedEntry = waitlistEntryService.updateWaitlistEntryByGuestId(guestId, status);
-        return ResponseEntity.ok(updatedEntry);
+    @PatchMapping("/{id}")
+    public ResponseEntity<WaitlistEntryDTO> updateWaitlistEntryById(
+            @PathVariable Integer id,
+            @RequestBody WaitlistStatus status) {
+        WaitlistEntry updatedEntry = waitlistEntryService.updateWaitlistEntryById(id, status);
+        WaitlistEntryDTO dto = WaitlistEntryConverter.convertToWaitlistEntryDto(updatedEntry);
+        return ResponseEntity.ok(dto);
     }
 
-    @DeleteMapping("/{guestId}")
-    public ResponseEntity<Void> deleteGuestAndWaitlistEntry(@PathVariable Integer guestId) {
-        waitlistEntryService.deleteGuestAndWaitlistEntry(guestId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGuestAndWaitlistEntry(@PathVariable Integer id) {
+        waitlistEntryService.deleteGuestAndWaitlistEntry(id);
         return ResponseEntity.noContent().build();
     }
 }
