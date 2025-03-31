@@ -29,7 +29,7 @@ public class WaitlistEntryController {
     @Autowired
     private GuestService guestService;
 
-    @PostMapping("/create")
+    @PostMapping("/join")
     public ResponseEntity<WaitlistEntryDTO> createGuestAndWaitlistEntry(
             @RequestBody Guest guest,
             @RequestParam("restaurantId") Integer restaurantId) {
