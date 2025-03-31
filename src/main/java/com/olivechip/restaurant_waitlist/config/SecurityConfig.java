@@ -69,7 +69,7 @@ public class SecurityConfig {
             // default to localhost for development if ALLOWED_ORIGINS is not set
             configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
         }
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         configuration.setAllowCredentials(true);
 
