@@ -1,5 +1,6 @@
 package com.olivechip.restaurant_waitlist.controller;
 
+import java.util.Map;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,7 +81,8 @@ public class WaitlistEntryController {
     @PatchMapping("/{id}")
     public ResponseEntity<WaitlistEntryDTO> updateWaitlistEntryById(
             @PathVariable Integer id,
-            @RequestBody WaitlistStatus status) {
+            @RequestBody Map<String, WaitlistStatus> body) {
+        WaitlistStatus status = body.get("status");
         WaitlistEntry updatedEntry = waitlistEntryService.updateWaitlistEntryById(id, status);
         WaitlistEntryDTO dto = WaitlistEntryConverter.convertToWaitlistEntryDto(updatedEntry);
         return ResponseEntity.ok(dto);
